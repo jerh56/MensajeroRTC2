@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <title>Listas </title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+</head>
+<body ng-controller="MensajeCtrl">
+
+    <div class="container">
+
+        <h3>Listas Desplegables en MEAN</h3>
+
+        <fieldset>
+
+
+            <label>Departamento :</label>
+
+            <select ng-model="dpto" ng-change="cargarDialogo()" ng-options="d.coddep as d.desdep for d in dptos"></select>
+
+            <label>Tipificaciones :</label>
+
+            <select ng-model="dialogo" >
+
+                <option ng-repeat="p in dialogos" value="{{p.coddial}}">{{p.desdia}}</option>
+
+            </select>
+
+
+        </fieldset>
+        <p></p>
+        <p>Departamento {{ dpto }}</p>
+        <p>Comando de teclas Asignado {{ tecla1}} + {{tecla2}}</p>
+
+
+
+
+    </div>
+    <script type="text/javascript" src="js/angular.js"></script>
+    <script type="text/javascript" src="js/lista_mensaje.js"></script>
+</body>
+</html>

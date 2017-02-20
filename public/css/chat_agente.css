@@ -1,0 +1,195 @@
+/*body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00B7FF;
+}*/
+
+
+#msjuser   {color:#fff}
+
+
+
+
+body, html {
+         
+          margin: 0;
+          -webkit-font-smoothing: antialiased;
+          font-weight: 100;
+          background: #f3f3f3;
+         
+          font-family: helvetica;
+      }
+.contenedor {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+}
+.informacion{
+  width:99%;
+  height:100px;
+  margin-bottom: 5px; 
+  
+}
+.informacion .info-user{
+width: 48%;
+  height: 100px;
+  background:#f3f3f3 ;
+  float: left;
+  
+  border: 1px solid #BDBDBD;
+  line-height: .8em;
+}
+.informacion .info-agente{
+width: 49.5%;
+height: 100px;
+background: #f3f3f3;
+float: right;
+border: 1px solid #BDBDBD;
+
+}
+      .tipificaciones {
+        width: 97%;
+        height: 150px;
+        background: #f3f3f3;
+        padding: 15px 15px 15px 15px;
+        margin-top: 10px;
+        margin-right: 10px; 
+        border: 1px solid #ccc;
+      }
+      .tipificaciones select{
+        width: 300px;
+        height: 30px;
+      }
+
+      .tipificaciones .tipi {
+        width: 40%;
+        height: 150px;
+        background: #f3f3f3;
+        float: left;;
+        color:#000;
+      }
+      .tipificaciones .tipi h5 {
+        font-size: 16px;
+        margin: 2px;
+      }
+      .tipificaciones .dialogo {
+         width: 60%;
+        height: 150px;
+        background: #f3f3f3;
+        float: right;
+        color:#000;
+      }
+      .tipificaciones .dialogo h5 {
+        font-size: 16px;
+        margin: 2px;
+      }
+       
+      .tabs input[type=radio] {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+      }
+      .tabs {
+        width: 88%;
+        float: none;
+        list-style: none;
+        position: relative;
+        padding: 0;
+
+        
+      }
+      .tabs li{
+        /*float: left;*/
+        margin-top:0px;
+      }
+      .tabs label {
+          display: block;
+          padding: 10px 20px;
+          border-radius: 2px 2px 0 0;
+          color: #08C;
+          font-size: 24px;
+          font-weight: normal;
+          font-family: 'Lily Script One', helveti;
+          background: rgba(255,255,255,0.2);
+          cursor: pointer;
+          position: relative;
+          top: 3px;
+          -webkit-transition: all 0.2s ease-in-out;
+          -moz-transition: all 0.2s ease-in-out;
+          -o-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+      }
+      .tabs label:hover {
+        background: rgba(255,255,255,0.5);
+        /*top: 0;*/
+      }
+       
+      
+       
+      [id^=tab]:checked ~ [id^=tab-content] {
+          display: block;
+      }
+      .tab-content{
+       
+        display: none;
+        text-align: left;
+        width: 99%;
+        font-size: 20px;
+        line-height: 140%;
+        padding-top: 10px;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 5px;
+        color: white;
+        position: absolute;
+        top: 0px;
+        left: 170px;
+        box-sizing: border-box;
+        -webkit-animation-duration: 0.5s;
+        -o-animation-duration: 0.5s;
+        -moz-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+      }
+      .box_conversation {
+        float:left;
+        width:98%;
+        height:400px;
+        overflow:auto;
+        padding:10px;
+        background: #fff;
+        border: 1px solid #ccc;
+      }
+      
+
+    .triangle-isosceles {
+    clear: both;
+    float: left;
+    margin-bottom: 10px;
+    background: #ccc;
+    word-wrap: break-word;
+    max-width: 95%;
+    border-radius: 5px;
+    padding: 10px;
+     color:#000;
+
+}
+
+  
+
+
+ .mensaje {
+  background: #87b87f;
+  clear: both;
+   float: right;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  word-wrap: break-word;
+  max-width: 95%;
+  color:#000;
+ }
+   
+
+    

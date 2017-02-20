@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Burbuja</title>
+ <script src="../scripts/jquery.js"></script>
+ <style>
+ .bloque{
+	float:left;
+	margin-left:5px;
+	width:20px;
+	height:20px;
+	text-align::center;
+	padding:5px; 
+	background:#fff;
+ }
+ </style>
+</head>
+
+<body>
+	<div id="contenido" style=" background:#efefef; height:30px; padding:10px;">
+    	
+    </div>
+    
+    <input id="botonsito" type="button" value="Comenzar" onclick="comenzar()" />
+</body>
+</html>
+<script>
+
+//variables globales
+arreglo=[11,15,12,8,1,5,4,2,99,2,3];
+var i=0,j=0;
+var iteracion; //sirve para guardar el evento de tiempo y poder pararlo
+$(document).ready(function(){
+
+	imprimirArreglo(arreglo)
+
+});
+
+function comenzar(){
+	
+
+	//comienza la iteracion con velocidad de 3 decimas de segundo cada iteración
+	iteracion=setInterval(burbuja,100);
+	
+	//desabilitamos boton
+	$("#botonsito").prop("disabled",true)
+	
+}
+
+//funcion que plasma el arreglo para poder ser visualizado
+function imprimirArreglo(){
+    
+	
+	//borramos el contenido del div del contenido
+	$("#contenido").html("");
+	
+	//imprimimos los elementos en forma de div
+	for(i_=0;i_<arreglo.length;i_++){
+		
+		//anexamos un div con clase bloque
+		$("#contenido").append("<div class='bloque'>"+arreglo[i_]+"</div>");
+	}
+	
+	
+}
+
+function burbuja(){
+	//recorreremos todos los elementos hasta n-1
+	if(i<arreglo.length){
+		
+		//recorreremos todos los elementos hasta n-i, tomar en cuenta los ultimos no tiene caso ya que ya estan acomodados.
+	    if(j<(arreglo.length-i)){
+			
+			//comparamos
+			if(arreglo[j]>arreglo[j+1]){
+				 //guardamos el numero mayor en el auxiliar
+				 aux=arreglo[j];
+				 //guardamos el numero menor en el lugar correspondiente
+				 arreglo[j]=arreglo[j+1];
+				 //asignamos el auxiliar en el lugar correspondiente
+				 arreglo[j+1]=aux;
+	 
+			}
+			
+			j++;
+		}else{
+			j=0;	
+			i++;
+		}
+		
+		
+	}else{
+	    //aqui se termina el algoritmo por lo cual paramos el setInterval
+		clearInterval(iteracion);
+		
+		
+			
+	}
+	
+	imprimirArreglo()
+	
+}
+</script>

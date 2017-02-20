@@ -1,0 +1,245 @@
+
+#msjuser   {color:blue;}
+
+body, html {
+  background: #f3f3f3;
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  
+  }
+.contenedor {
+  width: 99%;
+  margin: auto;
+  background: #f3f3f3;
+  
+}
+
+.info_conec{
+width: 100%;
+height: 100px;
+overflow: hidden;
+background: #f3f3f3;
+margin: auto;
+margin-top:10px;
+
+}
+.info_conec .datos {
+width: 49%;
+  height: 100px;
+  background:#D8D8D8 ;
+  float: left;
+  border: 1px solid #BDBDBD;
+  line-height: .8em;
+
+}
+
+
+.info_conec .estatus {
+width: 49%;
+height: 100px;
+background: #D8D8D8;
+float: right;
+border: 1px solid #BDBDBD;
+
+}
+
+
+#box_conversation {
+  margin: 10px auto;
+  padding:10px;
+  width: 70%;
+  height: 400px; 
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border: 1px solid;
+  border-color: #ccc;
+  background: #fff;
+ 
+}
+
+
+
+
+.grupo {
+  margin-left: 50px;
+}
+       
+ .tabs input[type=radio] {
+   position: absolute;
+   top: -9999px;
+   left: -9999px;
+      }
+
+  .tabs {
+    width: 650px;
+    float: none;
+    list-style: none;
+    position: relative;
+    padding: 0;
+    margin: 75px auto;
+  }
+
+  .tabs li{
+    /*float: left;*/
+  }
+
+  .tabs label {
+    display: block;
+    padding: 10px 20px;
+    border-radius: 1px 1px 0 0;
+    color: #08C;
+    font-size: 24px;
+    font-weight: normal;
+    font-family: 'Lily Script One', helveti;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    position: relative;
+
+
+
+
+    top: 3px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .tabs label:hover {
+    background: rgba(255,255,255,0.5);
+    top: 0;
+  }
+   
+    [id^=tab]:checked + label {
+      background: #08C;
+      color: white;
+      top: 0;
+    }
+       
+      [id^=tab]:checked ~ [id^=tab-content] {
+          display: block;
+      }
+      .tab-content{
+        z-index: 2;
+        display: block;
+        text-align: left;
+        width: 100%;
+        font-size: 20px;
+        line-height: 140%;
+        padding-top: 10px;
+        background: #08C;
+        padding: 15px;
+        color: white;
+        position: absolute;
+        top: 0px;
+        left: 170px;
+        box-sizing: border-box;
+        -webkit-animation-duration: 0.5s;
+        -o-animation-duration: 0.5s;
+        -moz-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+      }
+
+.triangle-isosceles {
+ clear: both;
+    float: left;
+    margin-bottom: 10px;
+    background: #ccc;
+    word-wrap: break-word;
+    max-width: 95%;
+    border-radius: 5px;
+    padding: 10px;
+     
+
+}
+
+  
+
+
+ .mensaje {
+  background: #87b87f;
+  clear: both;
+   float: right;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  word-wrap: break-word;
+  max-width: 95%;
+ }
+
+
+  
+
+
+#caja-mensaje {
+  width: 70%;
+  margin: auto;
+  height:100px;
+
+
+}
+
+  #caja-mensaje input{
+  border: solid 1px #4193BF;
+  outline: none;
+  padding: 10px;
+  width: 80%;
+  height: 20px;
+  margin: 20px 15px 0 20px;
+  border: 1px solid #ccc;
+  }
+
+  #caja-mensaje button {
+  background: #438eb9;
+  font-size: 18px;
+  color: #000;
+  margin-top: 15px;
+  cursor: pointer;
+  height: 35px;
+  width: 100px;
+ 
+  }
+
+.co_chat {
+  padding: 10px;
+  height: 400px;
+  width: 70%;
+  overflow: hidden;
+  overflow-y:scroll; 
+}
+
+
+
+@media screen and (max-height: 600px){ #box_conversation {height: 300px;}}
+@media screen and (max-width: 600px){ 
+  .triangle-isosceles {
+    font-size: 12px;
+    padding: 10px;
+  }
+  .triangle-isosceles .top {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 600px){ 
+  #caja-mensaje {
+    width: 99%;
+  }
+  #caja-mensaje input {
+    width: 70%;
+    height: 15px;
+    margin: 15px 5px 0 5px; 
+  }
+  #caja-mensaje button {
+    width: 80px;
+  }
+  
+}
+@media screen and (max-width: 600px){ 
+  #box_conversation {
+    width: 97%;
+  }
+}
+

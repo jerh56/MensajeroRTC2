@@ -1,0 +1,304 @@
+#msjuser   {color:blue;}
+
+body, html {
+  background: #fff;
+  margin: 0px;
+  padding: 0px;
+  
+  }
+.contenedor {
+  width: 100%;
+  border: 5px solid #3983c2;
+  
+
+  height: auto;
+}
+.header {
+width: 100%;
+height: 80px;
+background:#E6E6E6;
+margin-top:0;
+}
+
+.header .izq {
+background:#A4A4A4;
+width:40%;
+height:80px;
+float: left;
+}
+
+label {
+font-size: 18px;
+}
+
+.header .der {
+background: #BDBDBD;
+width: 60%;
+height: 80px;
+float: right;
+}
+
+.izq p .izquierda{
+float: left;
+}
+
+.derecha {
+
+}
+
+.informacion {
+width: 98%;
+height: 100px;
+overflow: hidden;
+background: #fff;
+margin: auto;
+margin-top:10px;
+
+}
+.informacion .info1 {
+width: 49.5%;
+height: 100px;
+background: #f3f3f3;
+border: 1px solid #ccc;
+float: left;
+padding: 15px;
+
+
+}
+.informacion .info2 {
+width: 49.5%;
+height: 100px;
+background: #f3f3f3;
+border: 1px solid #ccc;
+float: right;
+padding: 15px;
+}
+
+
+#box_conversation {
+  margin: 10px auto;
+  padding:10px;
+  width: 98%;
+  height: 590px; 
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border: 1px solid;
+  border-color: #ccc;
+ 
+}
+
+
+.grupo {
+  margin-left: 50px;
+}
+       
+ .tabs input[type=radio] {
+   position: absolute;
+   top: -9999px;
+   left: -9999px;
+      }
+
+  .tabs {
+    width: 650px;
+    float: none;
+    list-style: none;
+    position: relative;
+    padding: 0;
+    margin: 75px auto;
+  }
+
+  .tabs li{
+    /*float: left;*/
+  }
+
+  .tabs label {
+    display: block;
+    padding: 10px 20px;
+    border-radius: 2px 2px 0 0;
+    color: #08C;
+    font-size: 24px;
+    font-weight: normal;
+    font-family: 'Lily Script One', helveti;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    position: relative;
+
+
+
+
+    top: 3px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .tabs label:hover {
+    background: rgba(255,255,255,0.5);
+    top: 0;
+  }
+   
+    [id^=tab]:checked + label {
+      background: #08C;
+      color: white;
+      top: 0;
+    }
+       
+      [id^=tab]:checked ~ [id^=tab-content] {
+          display: block;
+      }
+      .tab-content{
+        z-index: 2;
+        display: none;
+        text-align: left;
+        width: 100%;
+        font-size: 20px;
+        line-height: 140%;
+        padding-top: 10px;
+        background: #08C;
+        padding: 15px;
+        color: white;
+        position: absolute;
+        top: 0px;
+        left: 170px;
+        box-sizing: border-box;
+        -webkit-animation-duration: 0.5s;
+        -o-animation-duration: 0.5s;
+        -moz-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+      }
+
+.triangle-isosceles {
+  position: relative;
+  size: 20px;
+  padding: 15px;
+  margin: 10px 0 25px;
+  color: #000;
+  background: #6fb3e0;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  word-break: break-all;
+  hyphens: auto;
+  width: auto;
+ -webkit-box-shadow: 10px 10px 11px -2px rgba(193,203,235,1);
+-moz-box-shadow: 10px 10px 11px -2px rgba(193,203,235,1);
+box-shadow: 10px 10px 11px -2px rgba(193,203,235,1);
+
+}
+
+  .triangle-isosceles:after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 50px;
+    border-width: 15px 15px 0;
+    border-style: solid;
+    border-color: #6fb3e0 transparent;
+    display: block;
+    width: 0;
+  }
+
+
+.triangle-isosceles.top {
+  background: #2b7dbc;
+}
+
+  .triangle-isosceles.top:after {
+    top: -15px;
+    right: 50px;
+    bottom: auto;
+    left: auto;
+    border-width: 0 15px 15px;
+    border-color: #2b7dbc transparent;
+  }
+
+
+
+#caja-mensaje {
+width: 98%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 10px auto;
+}
+#caja-mensaje .estatus {
+width: 30%;
+height: 75px;
+background: #f3f3f3;
+border: 1px solid #ccc;
+float: right;
+text-align: center;
+padding: 5px;
+
+}
+  #caja-mensaje input{
+  border: solid 1px #4193BF;
+  outline: none;
+  padding: 10px;
+  margin: 20px 10px 35px 10px;
+  width: 600px;
+  height: 35px;
+  }
+
+  #caja-mensaje button {
+   background: #D8D8D8;
+    padding: 0px 15px;
+    font-size: 20px;
+    color: #000;
+    border: none;
+    margin: 20px 10px 35px 10px;
+    border-radius: 3px;
+    box-shadow: 0 3px 0 #A4A4A4;
+    cursor: pointer;
+    height: 35px;
+
+  }
+  
+
+.co_chat {
+  padding: 10px;
+  height: 400px;
+  width: 70%;
+  overflow: hidden;
+  overflow-y:scroll; 
+}
+
+  #inferior {
+     padding-left: 60px;
+      color: #FFF;
+      background: #2980B9;
+      position:absolute; /*El div será ubicado con relación a la pantalla*/
+      left:0px; /*A la derecha deje un espacio de 0px*/
+      right:0px; /*A la izquierda deje un espacio de 0px*/
+      bottom:0px; /*Abajo deje un espacio de 0px*/
+      height:100px; /*alto del div*/
+      z-index:0;
+ }
+
+@media screen and (max-height: 600px) {
+
+  #inferior {
+    height: 40px;
+  }
+  #box_conversation {
+    height: 300px;
+  }
+
+}
+@media screen and (max-width: 750px) {
+
+  #caja-mensaje input {
+    width: 300px;
+  }
+  #caja-mensaje {
+    padding: 10px;
+  }
+
+
+  #box_conversation {
+    width: 100%;
+  }
+
+}
+

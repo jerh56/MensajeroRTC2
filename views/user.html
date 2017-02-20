@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<script type="text/javascript">
+			window.jQuery || document.write("<script src=' /js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!--<![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src=' /js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+
+<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src=' /js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+				<script type="text/javascript">
+				function check(input,input2,message) {
+					if (input.value != document.getElementById(input2).value) {
+					input.setCustomValidity(message);
+				} else {
+				// input is valid -- reset the error message
+				input.setCustomValidity('');
+			}
+		}
+		</script>
+
+		<script type="text/javascript">
+				//setInterval
+				var cronometro;
+
+				function detenerse()
+				{
+					clearInterval(cronometro);
+				}
+
+				function carga()
+				{
+					contador_s =0;
+					contador_m =0;
+					s = document.getElementById("segundos");
+					m = document.getElementById("minutos");
+
+					cronometro = setInterval(
+						function(){
+							if(contador_s==60)
+							{
+								contador_s=0;
+								contador_m++;
+								m.innerHTML = contador_m;
+
+								if(contador_m==60)
+								{
+									contador_m=0;
+								}
+							}
+
+							s.innerHTML = contador_s;
+							contador_s++;
+
+						}
+						,1000);
+
+				}
+
+		</script>
+
+		<script src=" /js/bootstrap.min.js"></script>
+
+		<!--page specific plugin scripts-->
+
+		<!--[if lte IE 8]>
+		  <script src=" /js/excanvas.min.js"></script>
+		<![endif]-->
+
+		<script src=" /js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src=" /js/jquery.ui.touch-punch.min.js"></script>
+		<script src=" /js/jquery.slimscroll.min.js"></script>
+		<script src=" /js/jquery.easy-pie-chart.min.js"></script>
+		<script src=" /js/jquery.sparkline.min.js"></script>
+		<script src=" /js/flot/jquery.flot.min.js"></script>
+		<script src=" /js/flot/jquery.flot.pie.min.js"></script>
+		<script src=" /js/flot/jquery.flot.resize.min.js"></script>
+
+		<!--ace scripts-->
+
+		<script src=" /js/ace-elements.min.js"></script>
+		<script src=" /js/ace.min.js"></script>
+
+		<!--inline scripts related to this page-->
+
+		<script type="text/javascript">
+			jQuery(function($) {
+				$('.easy-pie-chart.percentage').each(function(){
+					var $box = $(this).closest('.infobox');
+					var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+					var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+					var size = parseInt($(this).data('size')) || 50;
+					$(this).easyPieChart({
+						barColor: barColor,
+						trackColor: trackColor,
+						scaleColor: false,
+						lineCap: 'butt',
+						lineWidth: parseInt(size/10),
+						animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
+						size: size
+					});
+				})
+			
+				$('.sparkline').each(function(){
+					var $box = $(this).closest('.infobox');
+					var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
+					$(this).sparkline('html', {tagValuesAttribute:'data-values', type: 'bar', barColor: barColor , chartRangeMin:$(this).data('min') || 0} );
+				});
+			
+			
+			
+			
+			  var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
+			  var data = [
+				{ label: "social networks",  data: 38.7, color: "#68BC31"},
+				{ label: "search engines",  data: 24.5, color: "#2091CF"},
+				{ label: "ad campaings",  data: 8.2, color: "#AF4E96"},
+				{ label: "direct traffic",  data: 18.6, color: "#DA5430"},
+				{ label: "other",  data: 10, color: "#FEE074"}
+			  ]
+			  function drawPieChart(placeholder, data, position) {
+			 	  $.plot(placeholder, data, {
+					series: {
+						pie: {
+							show: true,
+							tilt:0.8,
+							highlight: {
+								opacity: 0.25
+							},
+							stroke: {
+								color: '#fff',
+								width: 2
+							},
+							startAngle: 2
+						}
+					},
+					legend: {
+						show: true,
+						position: position || "ne", 
+						labelBoxBorderColor: null,
+						margin:[-30,15]
+					}
+					,
+					grid: {
+						hoverable: true,
+						clickable: true
+					}
+				 })
+			 }
+			 drawPieChart(placeholder, data);
+			
+			 /**
+			 we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+			 so that's not needed actually.
+			 */
+			 placeholder.data('chart', data);
+			 placeholder.data('draw', drawPieChart);
+			
+			
+			
+			  var $tooltip = $("<div class='tooltip top in hide'><div class='tooltip-inner'></div></div>").appendTo('body');
+			  var previousPoint = null;
+			
+			  placeholder.on('plothover', function (event, pos, item) {
+				if(item) {
+					if (previousPoint != item.seriesIndex) {
+						previousPoint = item.seriesIndex;
+						var tip = item.series['label'] + " : " + item.series['percent']+'%';
+						$tooltip.show().children(0).text(tip);
+					}
+					$tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+				} else {
+					$tooltip.hide();
+					previousPoint = null;
+				}
+				
+			 });
+			
+			
+			
+			
+			
+			
+				var d1 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.5) {
+					d1.push([i, Math.sin(i)]);
+				}
+			
+				var d2 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.5) {
+					d2.push([i, Math.cos(i)]);
+				}
+			
+				var d3 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.2) {
+					d3.push([i, Math.tan(i)]);
+				}
+				
+			
+				var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'220px'});
+				$.plot("#sales-charts", [
+					{ label: "Domains", data: d1 },
+					{ label: "Hosting", data: d2 },
+					{ label: "Services", data: d3 }
+				], {
+					hoverable: true,
+					shadowSize: 0,
+					series: {
+						lines: { show: true },
+						points: { show: true }
+					},
+					xaxis: {
+						tickLength: 0
+					},
+					yaxis: {
+						ticks: 10,
+						min: -2,
+						max: 2,
+						tickDecimals: 3
+					},
+					grid: {
+						backgroundColor: { colors: [ "#fff", "#fff" ] },
+						borderWidth: 1,
+						borderColor:'#555'
+					}
+				});
+			
+			
+				$('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+				function tooltip_placement(context, source) {
+					var $source = $(source);
+					var $parent = $source.closest('.tab-content')
+					var off1 = $parent.offset();
+					var w1 = $parent.width();
+			
+					var off2 = $source.offset();
+					var w2 = $source.width();
+			
+					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+					return 'left';
+				}
+			
+			
+				$('.dialogs,.comments').slimScroll({
+					height: '300px'
+			    });
+				
+				
+				//Android's default browser somehow is confused when tapping on label which will lead to dragging the task
+				//so disable dragging when clicking on label
+				var agent = navigator.userAgent.toLowerCase();
+				if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+				  $('#tasks').on('touchstart', function(e){
+					var li = $(e.target).closest('#tasks li');
+					if(li.length == 0)return;
+					var label = li.find('label.inline').get(0);
+					if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
+				});
+			
+				$('#tasks').sortable({
+					opacity:0.8,
+					revert:true,
+					forceHelperSize:true,
+					placeholder: 'draggable-placeholder',
+					forcePlaceholderSize:true,
+					tolerance:'pointer',
+					stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+						$(ui.item).css('z-index', 'auto');
+					}
+					}
+				);
+				$('#tasks').disableSelection();
+				$('#tasks input:checkbox').removeAttr('checked').on('click', function(){
+					if(this.checked) $(this).closest('li').addClass('selected');
+					else $(this).closest('li').removeClass('selected');
+				});
+				
+			
+			})
+		</script>
+	<meta charset="utf-8">
+		<meta content="IE=edge" http-equiv="X-UA-Compatible">
+		<meta content="width=device-width, initial-scale=1.0" name="viewport">
+		<meta content="overview &amp; stats" name="description"/>
+		<meta content="" name="author">
+	
+	<link href=" /css/bootstrap.min.css" rel="stylesheet" />
+		<link href=" /css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href=" /css/font-awesome.min.css" />
+		
+		
+		
+		<!--page specific plugin styles-->
+		<!--fonts-->
+		<link rel="stylesheet" href=" /css/ace-fonts.css" />
+		
+		<!--ace styles-->
+		<link rel="stylesheet" href=" /css/ace.min.css" />
+		<link rel="stylesheet" href=" /css/ace-responsive.min.css" />
+		<link rel="stylesheet" href=" /css/ace-skins.min.css" />
+		
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href=" /css/font-awesome-ie7.min.css" />
+		<![endif]-->
+		
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href=" /css/ace-ie.min.css" />
+		<![endif]-->
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src=" /js/html5shiv.js"></script>
+			<script src=" /js/respond.min.js"></script>
+		<![endif]-->
+		
+		<!--inline styles related to this page-->
+		<!--ace settings handler-->
+		<script src=" /js/ace-extra.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+
+<!-- para el chat -->
+		<script>
+			var socket = io.connect('/',{'forceNew': false });
+			$( document ).ready(function() {
+				console.log( "ready!" );
+				var localusername ='';
+				// on connection to server, ask for user's name with an anonymous callback
+				socket.on('connect', function(){
+					// call the server-side function 'adduser' and send one parameter (value of prompt)
+					//localusername = prompt("Cual es tu nombre de usuario?");
+					localusername = '<%= username %>'
+					socket.emit('connectuser', localusername);
+					socket.localusername = localusername;
+				});
+				socket.on('reconnecting', function(){
+					console.log("Reconectando");
+				});
+				// listener, whenever the server emits 'updatechat', this updates the chat body
+				socket.on('updatechat', function (username, data) {
+					if (username === localusername){
+					   $('#box_conversation').append(' <p class="triangle-isosceles"> <b>' + username + ':</b><br> ' + data + '</p> ');
+					   
+
+
+					   //var tam = parseInt(username.length+data.length)-4;
+					   //console.log("a"+tam);
+					   //$('.triangle-isosceles').css( "width",tam+'%');
+					  // $('.triangle-isosceles').css( "height",tam+'%');
+					   //console.log("a "+data.length);				
+					   //$('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
+				    }
+				    else{
+				    	$('#box_conversation').append(' <p class="mensaje "> <b>'  + username + ':</b><br> ' + data + ' </p> ' );
+
+				    	//$('#conversation').append('<b id="msjuser">'+ '>>' + username + ':</b> ' + data + '<br>');
+				    } 
+					//Getting the element's new height now
+				    var sHeight = $('#box_conversation')[0].scrollHeight;
+				    //Scrolling the element to the sHeight
+				    $('#box_conversation').scrollTop(sHeight);
+				    console.log(sHeight);
+				});
+				// listener, whenever the server emits 'updaterooms', this updates the room the client is in
+				socket.on('updaterooms', function(rooms, current_room) {
+					$('#agents').empty();
+					$.each(rooms, function(key, value) {
+					   $('#agents').append('<div>' + value.nombre + '</div>');
+					});
+				});
+				socket.on('redirect', function(par_url) {
+					console.log(par_url);
+					window.location.href = par_url;
+			    });  
+				function switchRoom(room){
+					socket.emit('switchRoom', room);
+				}
+				// on load of page
+				$(function(){
+					$('#data').focus(); // al cargar por primera vez manda el enfoque al textbox data 
+					// when the client clicks SEND
+					$('#datasend').click( function() {
+						var message = $('#data').val();
+						$('#data').val('');
+						$('#data').focus(); // manda el enfoque al input
+						// tell server to execute 'sendchat' and send along one parameter
+						socket.emit('sendchat', message);
+					});
+					// when the client hits ENTER on their keyboard
+					$('#data').keyup(function(e) {
+						if(e.which == 13) {
+							$(this).blur();
+							$('#datasend').focus().click();
+						}
+						else{
+							socket.emit('typing','');
+						}
+					});
+				});
+			});
+		</script>
+	<!-- para el chat -->
+
+	</head>
+	<body onload="carga()">
+		<div class="navbar" id="navbar">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<a href="#" class="brand">
+						<small>
+							<i class="icon-leaf"></i>
+							Help - Desk
+						</small>
+					</a><!--/.brand-->
+
+					<ul class="nav ace-nav pull-right">
+
+
+						<li class="light-blue">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								
+								<span class="user-info">
+									<small>Bienvenido</small>
+									<small><%= username %></small>
+								<small></small>
+								</span>
+
+								<i class="icon-caret-down"></i>
+							</a>
+
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+								<li>
+									<a href="/">
+										<i class="icon-home "></i>
+										Inicio
+									</a>
+								</li>
+								<li>
+									<a href="/registro">
+										<i class="icon-cog"></i>
+										Registro
+									</a>
+								</li>
+
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="/logout">
+										<i class="icon-off"></i>
+										Logout
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul><!--/.ace-nav-->
+				</div><!--/.container-fluid-->
+			</div><!--/.navbar-inner-->
+	<div class="contenedor">
+		<div class="info_conec">
+			<div class="datos">
+				<div class="info_user">
+					<p><b>Usuario:</b> <%= username %></p>
+					<p><b>No. Empleado:</b> <%= numeroempleado %>
+
+					<p><b>Fecha:</b> 
+							<script>
+								var f = new Date();
+								document.write(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
+							</script>
+					</p>
+				</div>
+				
+			</div>
+
+			<div class="estatus">
+			<b>Atiende:</b> 
+			<br>
+				
+				<br>
+			<b>Tiempo de Atencion: </b><span id="minutos">0</span>:<span id="segundos">0</span>
+			</b>
+
+
+
+			
+			</div>
+			
+		
+
+		</div>
+		<div id ="box_conversation" class="co_chat" style="display: block;">
+		</div>
+
+
+
+		<div id="caja-mensaje">
+		
+			<input type="text" id="data" placeholder="Escribir mensaje..." required>
+			<button type="button" class="btn btn-sm btn-info" id="datasend">Enviar</button>
+			
+			
+			
+		</div>
+		<div id="inferior"></div>
+				
+		
+
+		
+
+		
+		</div>
+
+
+</div>
+
+	</body>
+</html>
+
