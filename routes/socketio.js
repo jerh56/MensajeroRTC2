@@ -201,7 +201,7 @@ io.sockets.on('connection', function (socket){
         }
         else
         {
-          console.log('se guardó un mesaje de usuario');
+          console.log('se guardó un mensaje de usuario');
         }
       });
       console.log(socket.username);

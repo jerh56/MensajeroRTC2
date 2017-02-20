@@ -4,15 +4,16 @@
 	
 	  	<link rel="stylesheet" type="text/css" href="../css/chat_agente.css">
 		<script src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript">
-			window.jQuery || document.write("<script src=' /js/jquery-2.0.3.min.js'>"+"<"+"/script>");
-		</script>
-		
+		<script src="/js/jquery-2.0.3.min.js"></script>
 		<script type="text/javascript" src="js/angular.js"></script>
 		<script type="text/javascript" src="js/ubigeo.js"></script>
-
+		<script type="text/javascript">
+			function demo(){
+				
+			}
+		</script>
 	</head>  
-	<body ng-controller="TipificacionCtrl">
+	<body ng-controller="TipificacionCtrl" onload="demo();">
 		<div id="divespera">
 			<h1>Esperando que un usuario se conecte o escriba un mensaje</h1>
 			<h1>Si se tarda más de 10 segundos, recarge la página</h1>
@@ -36,9 +37,10 @@
 			
 		</ul>
 	<script>
+		var socket = io.connect('/',{'forceNew': true });
 		$( document ).ready(function() {
 		    // Se declara la variable socket fuera de la funcion ready para que su ambito sea global
-			var socket = io.connect('/',{'forceNew': true });
+			
 			console.log( "ready!" );
 		    // la URL que se le pasa io.connect es / para que tome la ip local del cliente
 		    var agentname ='';
@@ -197,4 +199,5 @@
 		 });
 		</script>
 	</body>
+
 </html>
