@@ -5,31 +5,7 @@
 	  	<link rel="stylesheet" type="text/css" href="../css/chat_agente.css">
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/js/jquery-2.0.3.min.js"></script>
-	</head>  
-	<body>
-		<div id="divespera">
-			<h1>Esperando que un usuario se conecte o escriba un mensaje</h1>
-			<h1>Si se tarda más de 10 segundos, recarge la página</h1>
-		</div>
-	    <div id ="divbody"></div>
-
-		
-			<!--div style="float:left;width:100px;border-right:1px solid black;height:100px;padding:10px;overflow:auto;">
-				<b>AGENTES</b>
-				<div id="agents"></div>
-			</div>
-			<div id ="box_conversation" style="float:left;width:600px;height:100px;overflow:auto;padding:10px;">
-				<div id="conversation"></div>
-			</div>
-			<div style="float:bottom">
-				<input id="data" style="width:600px;" />
-				<input type="button" id="datasend" value="enviar" />
-			</div-->
-		<!--/div-->
-		<ul id="tabsmsj" class="tabs">
-			
-		</ul>
-	<script>
+		<script>
 		var socket = io.connect('/',{'forceNew': true });
 		$( document ).ready(function() {
 		    // Se declara la variable socket fuera de la funcion ready para que su ambito sea global
@@ -191,6 +167,31 @@
 			// });
 		 });
 		</script>
+	</head>  
+	<body>
+		<div id="divespera">
+			<h1>Esperando que un usuario se conecte o escriba un mensaje</h1>
+			<h1>Si se tarda más de 10 segundos, recarge la página</h1>
+		</div>
+	    <div id ="divbody"></div>
+
+		
+			<!--div style="float:left;width:100px;border-right:1px solid black;height:100px;padding:10px;overflow:auto;">
+				<b>AGENTES</b>
+				<div id="agents"></div>
+			</div>
+			<div id ="box_conversation" style="float:left;width:600px;height:100px;overflow:auto;padding:10px;">
+				<div id="conversation"></div>
+			</div>
+			<div style="float:bottom">
+				<input id="data" style="width:600px;" />
+				<input type="button" id="datasend" value="enviar" />
+			</div-->
+		<!--/div-->
+		<ul id="tabsmsj" class="tabs">
+			
+		</ul>
+	
 	</body>
 
 </html>

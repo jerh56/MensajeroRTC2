@@ -26,7 +26,7 @@ setInterval( function(){
   var agentroom = '0';
   WaitList.count({},function(err,nCount){
       if ( nCount > 0 ){
-        Agentnames.findOne( {cantidad:{$lt:3}, estatus:1}, function(err,agentdoc){
+        Agentnames.findOne( {cantidad:{$lt:5}, estatus:1}, function(err,agentdoc){
           if(err){
             console.log(err);
           }
@@ -54,7 +54,7 @@ setInterval( function(){
                         currentroom = waitdoc.idroom; // id del cuarto del usuario en espera
                         io.sockets.in(currentroom).emit('updatechat', 'SERVER', 'Hay agente disponible ');
                         io.sockets.in(agentroom).emit('newuser', 'SERVER',username, currentroom, waitdoc.userid); // se le avisa al agente que hay un usuario por atender
-                        io.sockets.in(currentroom).emit('updatechat', 'SERVER','Te está atendiendo ' + agentdoc.nombre, currentroom);
+                        //io.sockets.in(currentroom).emit('updatechat', 'SERVER','Te está atendiendo ' + agentdoc.nombre, currentroom);
                         waitdoc.remove({ _id: waitdoc._id }, function(err) {
                             if (err) {
                                 console.log('Error');
@@ -74,6 +74,74 @@ setInterval( function(){
       }
   });
 }, 2000); 
+
+
+// setInterval( function(){
+
+//   Agentnames.find({}, function(err,docAgentName){
+//     if(err){
+//       console.log(err);
+//     }
+//     else if(docAgentName){
+//       var countRooms = 0;
+//       for ( var i = 0; i < docAgentName.length ; i++){
+        
+//         countRooms = reviewRooms(docAgentName[i].userid);
+//         console.log(countRooms);
+//       }    
+//     }
+//   });
+
+  
+// }, 6000); 
+
+ function reviewRooms(par_agentid){
+       console.log(par_agentid);
+        Rooms
+        .find({useridagent:par_agentid})
+        .exec(function(err,docRooms){
+          if (docRooms.length > 0){
+            //console.log(docRooms);
+            var countUsers = 0;
+            var nCount = 0;
+            for ( var i = 0; i < docRooms.length ; i++){
+              var par_userid = docRooms[i].userid;
+              var par_roomid = docRooms[i].roomid;
+              var par_username = docRooms[i].username;
+              console.log(docRooms[i].userid, docRooms[i].useridagent);
+               nCount = checkusername(par_roomid,par_userid,par_username); 
+               console.log(nCount);
+               countUsers = countUsers + nCount;  
+            } 
+            return countUsers;         
+          }
+        });  
+    }
+
+    function checkusername(par_roomid,par_userid,par_username){
+      Usernames.findOne({userid: par_userid, idroom: par_roomid  }, function(err, docUserName){
+        if (docUserName){
+          console.log(docUserName);
+          if (docUserName.estatus == 1){
+             return 1; 
+              
+          }
+          else{
+              var dSegundosTrans = timeElapsed(docUserName.fecha_desconect);
+              if (dSegundosTrans < (60 * 3)){
+                 return 1;
+              }
+              else{
+                 return 0;
+              }
+          }
+        }
+        else
+        {
+          return 0;
+        }
+      });
+    }
 
 io.sockets.on('connection', function (socket){
     var socketId = socket.id;
@@ -176,10 +244,11 @@ io.sockets.on('connection', function (socket){
         // echo to client they've connected
         //socket.emit('updatechat', 'MENSAJERO RTC', 'Bienvenido: ' + agentname, idroom);
         // echo to room 1 that a person has connected to their room:
-        //socket.broadcast.to(idroom).emit('updatechat', 'MENSAJERO RTC', 'Sala: ' + idroom, idroom);
-        io.sockets.in(idroom).emit('updateagentchat', 'MENSAJERO RTC', 'Se conecto el usuario ' + par_username , idroom);
+        socket.broadcast.to(idroom).emit('updatechat', 'SERVER', 'Te atiende: ' +  agentname , '');
+        //socket.broadcast.to(idroom).emit('updatechat', 'SERVER', 'Sala: ' + idroom, idroom);
+        socket.emit('updatechat', 'MENSAJERO RTC', 'Se conectó el usuario ' + par_username , idroom);
         //socket.emit('updatechat', 'MENSAJERO RTC', 'Se conecto el usuario: '+ username , idroom);
-        socket.emit('updaterooms', agentnames, idroom);
+        //socket.emit('updaterooms', agentnames, idroom);
         console.log('Se conectó el agente: ' + agentname);
       }
     });
@@ -272,78 +341,22 @@ io.sockets.on('connection', function (socket){
                       console.log("Se desconectó el usuario " + socket.username)
                       //socket.broadcast.emit('updatechat', 'MENSAJERO RTC', socket.username + ' se ha desconectado');
                       socket.leave(socket.room);
+                      setTimeout(function(){
+                          console.log("se disminuyo");
+                      },3000);
                     // }
                   // });  
               }
           });
-
-          // Usernames.remove({ socketid: socket.id }, function(err) {
-          //     if (err) {
-          //         console.log('Error');
-          //     }
-          //     else {
-          //         Usernames.find({},function(err,rUsernames){
-          //           if (err){
-          //             console.log(err);
-          //           }
-          //           else{
-          //             console.log(rUsernames);
-          //             io.sockets.emit('updateusers', rUsernames);
-          //             // echo globally that this client has left
-          //             // preguntar si es usuario para avisar al agente que se desconecto
-          //             //io.sockets.in(socket.room).emit('updatechat', 'MENSAJERO RTC', "Se desconecto el usuario " + socket.username,socket.room);
-          //             console.log("Se desconecto el usuario " + socket.username)
-          //             //socket.broadcast.emit('updatechat', 'MENSAJERO RTC', socket.username + ' se ha desconectado');
-          //             socket.leave(socket.room);
-          //           }
-          //         });  
-          //     }
-          // });
-
-          // for (var posusername in usernames){
-          //    if (usernames[posusername].socketid === socket.id ){
-          //      console.log("se elimino el usuario " + usernames[posusername].nombre)
-          //      console.log(usernames);
-          //      usernames.splice(posusername,1);
-          //      console.log(usernames);
-          //      break;
-          //     }
-          // }  
-          // update list of users in chat, client-side
-          
        }
        else{
           if (socket.isuser === false){
-            // for (var posagentname in agentnames){
-            //   //console.log(agentnames[agentname].nombre);
-            //   if (agentnames[posagentname].idroom === socket.room ){
-            //      console.log("se elimino al agente " + agentnames[posagentname].nombre)
-            //      console.log(agentnames);
-            //      agentnames.splice(posagentname,1);
-            //      console.log(agentnames);
-            //      //delete agentnames[agentname];
-            //      break;
-            //   }
-
-
-            //}  
-            // update list of users in chat, client-side
-            
-            
-            //io.sockets.emit('updateusers', usernames);
-            
-            // echo globally that this client has left
             //socket.broadcast.emit('updatechat', 'MENSAJERO RTC', socket.agentname + ' se ha desconectado');
             Agentnames.findOne({ userid: socket.request.user._id }, function(err,docAgentName) {
               if (err) {
                   console.log('Error');
               }
               else {
-                  // Usernames.find({},function(err,rUsernames){
-                  //   if (err){
-                  //     console.log(err);
-                  //   }
-                  //   else{
                       console.log(docAgentName);
                       docAgentName.fecha_desconect = new Date();
                       docAgentName.estatus = 0;
@@ -355,8 +368,6 @@ io.sockets.on('connection', function (socket){
                       console.log("Se desconectó el usuario " + socket.agentname)
                       //socket.broadcast.emit('updatechat', 'MENSAJERO RTC', socket.username + ' se ha desconectado');
                       socket.leave(socket.room);
-                    // }
-                  // });  
               }
             });
           }
@@ -380,7 +391,7 @@ io.sockets.on('connection', function (socket){
         agentroom = '0';
         //Se busca al agente disponible de los agentes conectados
         console.log(agentnames);
-        Agentnames.findOne({cantidad:{$lt:3}, estatus:1}, function(err,doc){
+        Agentnames.findOne({cantidad:{$lt:5}, estatus:1}, function(err,doc){
           if(err){
             console.log(err);
           }
@@ -395,21 +406,43 @@ io.sockets.on('connection', function (socket){
             socket.isuser = true;
             socket.room = currentroom;
             // add the client's username to the global list
-            newUsername = new Usernames();
-            newUsername.nombre = par_username;
-            newUsername.socketid = socket.id;
-            newUsername.idroom = currentroom;
-            newUsername.userid = socket.request.user._id;
-            newUsername.fecha_conect = new Date();
-            newUsername.estatus = 1;
-            newUsername.save(function(err){
-                if (!err) console.log('Se conectó un usuario');
-            });
+            
+            Usernames.findOne({userid:socket.request.user._id},function(err,docUserName){
+              if (err){
+                console.log(err);
+              }
+              else{
+                //console.log(docUserName);
+                if (docUserName){
+                  docUserName.nombre = par_username;
+                  docUserName.socketid = socket.id;
+                  docUserName.idroom = currentroom;
+                  docUserName.userid = socket.request.user._id;
+                  docUserName.fecha_conect = new Date();
+                  docUserName.estatus = 1;
+                  docUserName.save(function(err){
+                      if (!err) console.log('Se conectó un usuario');
+                  });
+                }
+                else{
+                  newUsername = new Usernames();
+                  newUsername.nombre = par_username;
+                  newUsername.socketid = socket.id;
+                  newUsername.idroom = currentroom;
+                  newUsername.userid = socket.request.user._id;
+                  newUsername.fecha_conect = new Date();
+                  newUsername.estatus = 1;
+                  newUsername.save(function(err){
+                      if (!err) console.log('Se conectó un usuario');
+                  });
+                }
+              }
+            }); 
             socket.join(currentroom);
            // socket.broadcast.to(idroom).emit('updatechat', 'MENSAJERO RTC', par_agentname + ' es el agente disponible en esta sala', '');
 
             //socket.broadcast.to(idroom).emit('updatechat', 'MENSAJERO RTC', 'Todos nuestros agentes estan ocupados, por favor espere');
-            socket.emit('updatechat', 'MENSAJERO RTC', 'Todos nuestros agentes estan ocupados, por favor espere');
+            socket.emit('updatechat', 'MENSAJERO RTC', 'Todos nuestros agentes están ocupados, por favor espere');
             
           }
           else{
@@ -431,17 +464,17 @@ io.sockets.on('connection', function (socket){
                 socket.room = currentroom;
                 // add the client's username to the global list
                 
-                newUsername = new Usernames();
-                newUsername.nombre = par_username;
-                newUsername.socketid = socket.id;
-                newUsername.idroom = currentroom;
-                newUsername.userid = socket.request.user._id;
-                newUsername.fecha_conect = new Date();
-                newUsername.estatus = 1;
-                newUsername.save(function(err){
-                    //if (!err) 
-                      console.log('Se conectó un usuario');
-                });
+                // newUsername = new Usernames();
+                // newUsername.nombre = par_username;
+                // newUsername.socketid = socket.id;
+                // newUsername.idroom = currentroom;
+                // newUsername.userid = socket.request.user._id;
+                // newUsername.fecha_conect = new Date();
+                // newUsername.estatus = 1;
+                // newUsername.save(function(err){
+                //     //if (!err) 
+                //       console.log('Se conectó un usuario');
+                // });
                 // if (usernames.length == 0){
                 //     usernames[0] = ({"nombre":username, "socketid":socket.id});
                 //          // add the client's username to the wait list
@@ -452,7 +485,37 @@ io.sockets.on('connection', function (socket){
                        
                 // }
 
-
+                Usernames.findOne({userid:socket.request.user._id},function(err,docUserName){
+                  if (err){
+                    console.log(err);
+                  }
+                  else{
+                    //console.log(docUserName);
+                    if (docUserName){
+                      docUserName.nombre = par_username;
+                      docUserName.socketid = socket.id;
+                      docUserName.idroom = currentroom;
+                      docUserName.userid = socket.request.user._id;
+                      docUserName.fecha_conect = new Date();
+                      docUserName.estatus = 1;
+                      docUserName.save(function(err){
+                          if (!err) console.log('Se conectó un usuario');
+                      });
+                    }
+                    else{
+                      newUsername = new Usernames();
+                      newUsername.nombre = par_username;
+                      newUsername.socketid = socket.id;
+                      newUsername.idroom = currentroom;
+                      newUsername.userid = socket.request.user._id;
+                      newUsername.fecha_conect = new Date();
+                      newUsername.estatus = 1;
+                      newUsername.save(function(err){
+                          if (!err) console.log('Se conectó un usuario');
+                      });
+                    }
+                  }
+                }); 
                 //usernames[username] = username;
                 // send client to room 1
                 socket.join(currentroom);
@@ -618,7 +681,7 @@ io.sockets.on('connection', function (socket){
           //console.log(orderpacksdocs, orderpacksdocs.length);
           console.log(docRooms);
           if (docRooms.length > 0){
-            console.log(docRooms);
+            //console.log(docRooms);
             for ( var i = 0; i < docRooms.length ; i++){
               console.log(i); 
               console.log(docRooms[i]);
@@ -626,32 +689,14 @@ io.sockets.on('connection', function (socket){
               var par_roomid = docRooms[i].roomid;
               var par_username = docRooms[i].username;
               //console.log(docRooms[i].userid, docRooms[i].useridagent);
-              Usernames.findOne({userid: par_userid, idroom: par_roomid  }, function(err, docUserName){
-                  if (docUserName){
-                    if (docUserName.estatus == 1){
-                          socket.join(par_roomid);
-                          socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
-                          sendChatMsgList(par_roomid, par_username);
-                        
-                    }
-                    else{
-                        var dSegundosTrans = timeElapsed(docUserName.fecha_desconect);
-                        console.log(dSegundosTrans);
-                        if (dSegundosTrans < (60 * 3)){
-                          socket.join(par_roomid);
-                          socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
-                          sendChatMsgList(par_roomid, par_username);
-                          // socket.join(docRooms[i].roomid);
-                          // socket.broadcast.to(docRooms[i].roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
-                          // sendChatMsgList(docRooms[i].roomid, docRooms[i].username);
-                        }
-                    }
-                  }
-              });
+               checkmsg(par_roomid,par_userid,par_username); 
             }          
           }
         });  
     }
+
+   
+
     /* Envia la lista de mensajes del cuarto de un usuario */
     function sendChatMsgList(par_roomid, par_username){
          Msglist.find({room:par_roomid}, function(err,docMsglist){
@@ -673,6 +718,36 @@ io.sockets.on('connection', function (socket){
       var diff_dates_sec = (d_actual / 1000) - (d_to_compare.getTime() / 1000);
       return ( Math.floor(diff_dates_sec) );
     }
+
+    function checkmsg(par_roomid,par_userid,par_username){
+                  Usernames.findOne({userid: par_userid, idroom: par_roomid  }, function(err, docUserName){
+                  if (docUserName){
+                    console.log(docUserName);
+                    if (docUserName.estatus == 1){
+                          //console.log(docUserName);
+                          socket.join(par_roomid);
+                          socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
+                          sendChatMsgList(par_roomid, par_username);
+                        
+                    }
+                    else{
+                        console.log(docUserName);
+                        var dSegundosTrans = timeElapsed(docUserName.fecha_desconect);
+                        console.log(dSegundosTrans);
+                        if (dSegundosTrans < (60 * 3)){
+                          socket.join(par_roomid);
+                          socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
+                          sendChatMsgList(par_roomid, par_username);
+                          // socket.join(docRooms[i].roomid);
+                          // socket.broadcast.to(docRooms[i].roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
+                          // sendChatMsgList(docRooms[i].roomid, docRooms[i].username);
+                        }
+                    }
+                  }
+              });
+    }
+
+
     
   });
  return router;
