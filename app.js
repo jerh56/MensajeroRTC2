@@ -91,7 +91,17 @@ app.io.use(passportSocketIo.authorize({
   cookieParser: cookieParser
 }));
 // SOCKET:IO
-
+// Redirecciona en caso de no incluir https como protocolo
+if (app.get('env') !== 'development') {
+  app.use (function (req, res, next) {
+     var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
+     if (schema === 'https') {
+         next();
+     } else {
+       res.redirect('https://' + req.headers.host + req.url);
+     }
+   });
+}
 
 app.use('/', routes);
 app.use('/users', users);
