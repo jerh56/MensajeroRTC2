@@ -168,10 +168,37 @@ io.sockets.on('connection', function (socket){
                   var dSegundosTrans = timeElapsed(docUserName.fecha_desconect);
                   console.log(dSegundosTrans);
                   if (dSegundosTrans > (60 * 3)){
-                    userRegister(username);
+                    WaitList.findOne({userid:socket.request.user._id}, function(err, docMsglist){
+                      if (err){
+                          console.log(err);
+                      }
+                      else{
+                        if (docMsglist){
+                          // 1 = se reconectó pero aun sigue en espera de un agente
+                          userReconnect(docUserName.idroom, username, 1);
+                        }
+                        else{
+                          userRegister(username);  
+                        }
+                      }
+                    });  
                   }
                   else{
-                    userReconnect(docUserName.idroom, username);
+                    WaitList.findOne({userid:socket.request.user._id}, function(err, docMsglist){
+                      if (err){
+                          console.log(err);
+                      }
+                      else{
+                        if (docMsglist){
+                          // 1 = se reconectó pero aun sigue en espera de un agente
+                          userReconnect(docUserName.idroom, username, 1);
+                        }
+                        else{
+                          // 0 = se reconectó pero ya lo está atendiendo un agente
+                          userReconnect(docUserName.idroom, username, 0); 
+                        }
+                      }
+                    });
                   }       
                 }
                 else{
@@ -342,7 +369,7 @@ io.sockets.on('connection', function (socket){
                       //socket.broadcast.emit('updatechat', 'MENSAJERO RTC', socket.username + ' se ha desconectado');
                       socket.leave(socket.room);
                       setTimeout(function(){
-                          console.log("se disminuyo");
+                          console.log("se disminuyó");
                       },3000);
                     // }
                   // });  
@@ -534,7 +561,7 @@ io.sockets.on('connection', function (socket){
         });
     }
 
-  function userReconnect(par_idroom, par_username){
+  function userReconnect(par_idroom, par_username, par_espera){
     // store the username in the socket session for this client
         socket.username = par_username;
         // store the room name in the socket session for this client
@@ -563,6 +590,9 @@ io.sockets.on('connection', function (socket){
                   docUserName.save();         
               }
           });
+        if (par_espera == 1){
+          socket.emit('updatechat', 'MENSAJERO RTC', 'Todos nuestros agentes están ocupados, por favor espere');
+        }
         socket.broadcast.to(socket.room).emit('updatechat', 'MENSAJERO RTC', "Se conectó el usuario " + socket.username,socket.room);  
         console.log('Se reconectó el usuario: ' +  par_username);
     }
