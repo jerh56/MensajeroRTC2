@@ -33,6 +33,7 @@ var passportSocketIo = require('passport.socketio');
 app.io = require('socket.io')();
 // SOCKET.IO
 
+
 //REDIS
 var RedisConf = JSON.parse(process.env.REDIS_CONF);
 var session = require('express-session'); // Manejo de sesiones
@@ -44,6 +45,7 @@ var sessionRedis = new RedisStore({
    pass: RedisConf.pass
  });
 // REDIS
+
 
 // PASSPORT
 var passport = require('passport');

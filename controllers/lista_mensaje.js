@@ -3,9 +3,7 @@ var lm = require('../models/lista_mensaje');
 module.exports = exports = {
 
     dialogos: function(req, res) {
-        /*res.render('index', {
-            titulo: "Listas Desplegables en MEAN con rutas"
-        });*/
+        
         res.sendFile('dialogos.html', {root: './views'});
     },
 

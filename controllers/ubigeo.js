@@ -3,9 +3,7 @@ var ug = require('../models/ubigeo');
 module.exports = exports = {
 
     tipificacion: function(req, res) {
-        /*res.render('index', {
-            titulo: "Listas Desplegables en MEAN con rutas"
-        });*/
+ 
         res.sendFile('tipificacion.html', {root: './views'});
     },
 

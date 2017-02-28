@@ -8,7 +8,7 @@ MongoClient.connect(url, function(err, db) {
 
     exports.cargarDpto = function(cb) {
 
-        var Dpto = db.collection('dpto');
+        var Dpto = db.collection('departamentos');
 
         Dpto.find().toArray(function(err, results) {
             cb(results);
