@@ -1,4 +1,5 @@
 var express = require('express');
+var http = require("http");
 var router = express.Router();
 var flash = require('connect-flash');
 var passport = require('passport');
@@ -19,14 +20,13 @@ router.get('/lista_mensaje', function(req,res){
 });
 
 //router.get('/tipificacion', ubigeo.tipificacion);
-router.get('/tipificacion/db/dpto', ubigeo.dpto);
+router.get('/tipificacion/db/departamento', ubigeo.dpto);
 router.get('/tipificacion/db/tipi/:cd', ubigeo.tipi);
 router.get('/tipificacion/db/orig/', ubigeo.orig);
 
 
-router.get('/dialogos/db/dpto', dialogo.dpto);
+router.get('/dialogos/db/departamento', dialogo.dpto);
 router.get('/dialogos/db/dialogo/:cd', dialogo.dialogo);
-//router.get('/lista_mensaje/db/orig/:cp', lista_mensaje.orig);
 
 
 router.get('/listas', require('connect-ensure-login').ensureLoggedIn('/login'), function (req, res) {
@@ -58,15 +58,15 @@ router.get('/', function(req, res) {
     //res.sendFile(__dirname + '/indexUser.html');
     console.log(req.user.username);
     console.log(req.user.No_empleado);
-    res.render('user', { username: req.user.username, numeroempleado: req.user.No_empleado});
+    res.render('user', {username: req.user.username, numeroempleado: req.user.No_empleado});
   });
   
   
   router.get('/agent', require('connect-ensure-login').ensureLoggedIn('/ag_login'), function (req, res) {
 
-
     console.log(req.user.username);
     res.render('agent', {agentname: req.user.username});
+
   });
 
 // PASSPORT
@@ -85,11 +85,9 @@ router.get('/', function(req, res) {
   });
 
     //REGISTRO USUARIOS
-  router.get('/registro', function(req, res) {
-
-
-  res.render('registro', {message: req.flash('message')});
-  });
+    router.get('/registro', function(req, res) {
+        res.render('registro', {message: req.flash('message')});
+    });
   
     //REGISTRO AGENTES
   router.get('/ag_registro', function(req, res) {
@@ -98,13 +96,11 @@ router.get('/', function(req, res) {
   });
 
   //ENSURELOGGED USSERS
- router.get('/principal',
-  require('connect-ensure-login').ensureLoggedIn('/login'),function(req, res){
-
-          res.render('principal', {message: req.flash('message'), user: req.user});
+ router.get('/principal', require('connect-ensure-login').ensureLoggedIn('/login'),function(req, res){
+    res.render('principal', {message: req.flash('message'), user: req.user});
  });
 
- router.get('/usuario', require('connect-ensure-login').ensureLoggedIn('/login'),function(req, res){
+router.get('/usuario', require('connect-ensure-login').ensureLoggedIn('/login'),function(req, res){
 
           res.render('usuario', {message: req.flash('message'), user: req.user});
  });
@@ -114,14 +110,13 @@ router.get('/', function(req, res) {
 
         var newDescripcion = new Descripcion();
 
-          newDescripcion.coddep = req.body.coddep;
-          newDescripcion.descripcion = req.body.descripcion;
-
+        newDescripcion.coddep = req.body.coddep;
+        newDescripcion.descripcion = req.body.descripcion;
 
       newDescripcion.save(function(err) {
         if (err){
           console.log('No se pudo hacer registro de la descripcion de el problema: '+err);
-          res.render('error', {message: 'No se pudo hacer registro de la descripcion de el problema: '+err});
+          res.render('usuario', {message: 'No se pudo hacer registro de la descripcion de el problema: '+err});
           }
           else{
             console.log('se guardo descripcion');
@@ -232,7 +227,7 @@ router.post('/registroincidencia', function(req, res){
 
     if (doc){
       console.log('Ya existe esta incidencia');
-      res.render('tipificacion', {message: 'Ya existe esta incidencia'})
+      res.render('tipificacion', {message: 'Ya existe esta incidencia', user: req.user})
     }
     else{
 
@@ -251,11 +246,11 @@ router.post('/registroincidencia', function(req, res){
                
                 if (err){
                     console.log('No se pudo guardar el incidencia: '+err);
-                    res.render('error', {message: 'No se pudo guardar el incidencia: '+err});
+                    res.render('error', {message: 'No se pudo guardar el incidencia: ', user: req.user});
                 }
                 else{
                     console.log('se guardo incidencia');
-                    res.render('tipificacion', {message: 'se guardo incidencia'});
+                    res.render('tipificacion', {message: 'se guardo incidencia', user: req.user});
                 }
             });
 
@@ -281,11 +276,11 @@ router.post('/registroorigen', function(req, res){
            
             if (err){
                 console.log('No se pudo registrar el Origen: '+err);
-                res.render('error', {message: 'No se pudo guardar Origen: '+err});
+                res.render('error', {message: 'No se pudo guardar Origen', user: req.user});
             }
             else{
                 console.log('se guardo origen');
-                res.render('tipificacion', {message: 'se guardo Origen'});
+                res.render('tipificacion', {message: 'se guardo Origen', user: req.user});
             }
         });
 
@@ -318,7 +313,7 @@ router.post('/updatestatus', function(req,res){
 
       console.log('Codpro: '+ codpro);
       console.log('Se actualizo Incidencia' +doc);
-      res.render('tipificacion', {message: 'Se actualizo correctamente'})
+      res.render('tipificacion', {message: 'Se actualizo correctamente', user: req.user})
           
       };
     });
@@ -348,7 +343,7 @@ router.post('/tipificacionupdate', function(req,res){
         {
 
       console.log('Se actualizo Incidencia' +doc);
-      res.render('tipificacion', {message: 'Se actualizo correctamente'})
+      res.render('tipificacion', {message: 'Se actualizo correctamente', user: req.user})
           
       };
     });
@@ -381,7 +376,7 @@ router.post('/origenupdate', function(req,res){
         {
 
       console.log('Se actualizo Origen' +doc);
-      res.render('tipificacion', {message: 'Se actualizo origen correctamente'})
+      res.render('tipificacion', {message: 'Se actualizo origen correctamente', user: req.user})
           
       };
     });
@@ -426,11 +421,11 @@ router.post('/dialogos', function(req, res){
       newDialogo.save(function(err) {
         if (err){
           console.log('No se pudo registrar la dialogo : '+err);
-          res.render('error', {message: 'No se pudo registrar la dialogo :'});
+          res.render('error', {message: 'No se pudo registrar la dialogo', user: req.user});
           }
           else{
             console.log('se guardo dialogo');
-            res.render('dialogos', {message: 'Se registro correctamente el dialogo'});
+            res.render('dialogos', {message: 'Se registro correctamente el dialogo', user: req.user});
 
           }
        });
@@ -439,7 +434,7 @@ router.post('/dialogos', function(req, res){
     else
     {
       console.log("Se encontro Comando " + doc);
-      res.render('dialogos', {message: 'Comando ya existe'});
+      res.render('dialogos', {message: 'Comando ya existe', user: req.user});
 
     }
 
@@ -458,7 +453,7 @@ router.post('/dialogosupdate', function(req,res){
 
     if (err || !doc){
       console.log(err);  
-       res.render('error', {message: 'No se pudo modificar la dialogo :'});    
+       res.render('error', {message: 'No se pudo modificar la dialogo', user: req.user});    
     }
     else{
 
@@ -473,7 +468,7 @@ router.post('/dialogosupdate', function(req,res){
 
       console.log('Coddial: '+ coddial);
       console.log('Se actualizo Dialogo' +doc);
-      res.render('dialogos', {message: 'Se actualizo el dialogo correctamente'})
+      res.render('dialogos', {message: 'Se actualizo el dialogo correctamente', user: req.user})
           
       };
     });
@@ -491,8 +486,7 @@ router.post('/dialogosupdate', function(req,res){
 
 //REGISTRO DE EMPRESA
 
-  router.get('/registro_empresa',
-  require('connect-ensure-login').ensureLoggedIn('/ag_login'),function(req, res){
+  router.get('/registro_empresa', require('connect-ensure-login').ensureLoggedIn('/ag_login'),function(req, res){
 
           res.render('registro_empresa', {message: req.flash('message'), user: req.user});
  });
@@ -519,11 +513,11 @@ router.post('/registro_empresa', function(req, res){
       newEmpresa.save(function(err) {
         if (err){
           console.log('No se pudo registrar la empresa : '+err);
-          res.render('error', {message: 'No se pudo registrar la empresa :'+err});
+          res.render('error', {message: 'No se pudo registrar la empresa', user: req.user});
           }
           else{
             console.log('se guardo empresa');
-            res.render('registro_empresa', {message: 'se registro correctamente la empresa'});
+            res.render('registro_empresa', {message: 'se registro correctamente la empresa', user: req.user});
 
           }
         })
@@ -552,11 +546,11 @@ router.post('/origenincidencias', function(req, res){
       newOrigen.save(function(err) {
         if (err){
           console.log('No se pudo guardar dialogo : '+err);
-          res.render('error', {message: 'No se pudo guardar dialogo: '+err});
+          res.render('error', {message: 'No se pudo guardar dialogo', user: req.user});
           }
           else{
             console.log('se guardo dialogo');
-            res.render('origenincidencias', {message: 'se guardo dialogo correctamente'});
+            res.render('origenincidencias', {message: 'se guardo dialogo correctamente', user: req.user});
 
           }
         })
@@ -567,40 +561,102 @@ router.post('/origenincidencias', function(req, res){
 
 //SELECCION DE DEPARTAMENTO Y DESCRIPCION DE INCIDENCIA
 
-router.post('/departamento', function(req, res){
+router.get('/departamento', function(req,res){
 
-      var newDepartamento = new Departamento();
+  var msjres = req.flash('message');
+  res.render('departamento', {message: msjres[0], user: req.user} );
 
-      newDepartamento.Departamento = req.body.Departamento;
-      newDepartamento.Descripcion = req.body.Descripcion;
+});
+
+router.post('/registro_departamento', function(req, res){
+
+    Departamento.count({}, function (err, nCount){
+
+        var newDepartamento = new Departamento();
+
+        newDepartamento.desdep = req.body.desdep
+        newDepartamento.coddep = nCount + 1;
+
+        newDepartamento.save(function(err) {
+
+            if (err){
+                console.log('No se pudo guardar  departamento');
+                res.render('departamento', {message: 'No se pudo guardar departamento: ', user: req.user});
+            }
+            else{
+                console.log('se guardo Departamento');
+                res.render('departamento', {message: 'Se guardo nuevo departamento: ', user: req.user});
+            }
+        });
+    });    
+});
+
+//Función para actualizar la descripccion de los departamentos (desdep).
+router.post('/update_departamento', function(req,res){
+
+    var coddep = req.body.coddep;
+
+    Departamento.findOne({"coddep": coddep}, function(err, doc){
+
+        if (err || !doc){
+            console.log(err);      
+        }
+        else{
+
+            doc.desdep = req.body.desdep;
+
+            doc.save(function(err){
+                if (err){
+                    console.log(err);
+                }
+                else{
+
+                    console.log('Se actualizo departamento');
+                    res.render('departamento', {message: 'Se actualizo departamento', user: req.user})
+
+                };
+            });
+        }
+
+    });//findone function
+});//function post
 
 
-      newDepartamento.save(function(err) {
-        if (err){
-          console.log('No se pudo guardar descripcion y departamento : '+err);
-          res.render('error', {message: 'No se pudo guardar descripcion y departamento: '+err});
-          }
-          else{
-            console.log('se guardo descripcion');
-            console.log(newDepartamento);
-            console.log(req.user);
-            res.render('departamento', {message: req.flash('message'), newDepartamento, user: req.user});
-          }
-        })
-    }
-    );
+//Función para actualizar el status de un departamento.
+router.post('/status_departamento', function(req,res){
+
+    var coddep = req.body.coddep;
+
+    Departamento.findOne({"coddep": coddep}, function(err, doc){
+
+        if (err || !doc){
+            console.log(err);      
+        }
+        else{
+
+            doc.status = req.body.status;
+
+            doc.save(function(err){
+                if (err){
+                    console.log(err);
+                }
+                else
+                {
+
+                    console.log('Se actualizo estatus del departamento' +doc);
+                    res.render('departamento', {message: 'Se actualizo estatus del departamento', user: req.user})
+
+                };
+            });
+        }
+
+    });//findone function
+});//post function
+
+
+
 
 //SELECCION DE DEPARTAMENTO Y DESCRIPCION DE INCIDENCIA
-// SOCKET.IO
-/* router.get('/chat',
-  require('connect-ensure-login').ensureLoggedIn('/login'),function(req, res){
-
-    console.log(req.Departamento);
-          res.render('chat', {message: req.flash('message'), departamento: req.Departamento});
- });*/
-// SOCKEY.IO
-
-
 
 // PASSPORT USUARIOS
   router.post('/signin', passport.authenticate('login', {

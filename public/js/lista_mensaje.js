@@ -9,7 +9,7 @@ app.controller('MensajeCtrl', function($scope, $http) {
             $scope.cargarProv();
         });*/
 
-    $http.get('/dialogos/db/dpto')
+    $http.get('/dialogos/db/departamento')
         .success(function(data) {
             $scope.dptos = data;
             $scope.dpto = data[0].coddep;

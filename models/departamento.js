@@ -3,8 +3,9 @@ var mongoose = require('mongoose');
 // RegistroEmpresa Schema
 var DepartamentoSchema = mongoose.Schema({
 	
-	Departamento: 		String,
-	Descripcion: 		String,
+	coddep:				String,
+	desdep: 			String,
+	status: 			{type:String, default: true},
 	createdAt: 			{type:Date, default: Date.now}
 });
 

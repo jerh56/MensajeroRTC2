@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 	<head>
 		<meta charset="utf-8">
 		<meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -13,7 +13,7 @@
 		<link href=" /css/bootstrap.min.css" rel="stylesheet" />
 		<link href=" /css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href=" /css/font-awesome.min.css" />
-		<link rel="stylesheet" href=" /css/estilos.css" />
+		<link rel="stylesheet" href=" /css/tipificaciones.css" />
 		
 		
 		<!--page specific plugin styles-->
@@ -44,7 +44,7 @@
 		<script src=" /js/ace-extra.min.js"></script>
 	</head>
 
-	<body>
+	<body ng-controller="TipificacionCtrl" >
 		<div class="navbar" id="navbar">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -66,9 +66,9 @@
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								
 								<span class="user-info">
-								<small>Bienvenido</small>									
-                				<small><%= user.username %></small>
-                				
+									<small>Bienvenido</small>
+									<small><%= user.username %></small>
+								<small></small>
 								</span>
 
 								<i class="icon-caret-down"></i>
@@ -76,12 +76,17 @@
 
 							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
 								<li>
+									<a href="/">
+										<i class="icon-home "></i>
+										Inicio
+									</a>
+								</li>
+								<li>
 									<a href="/registro">
-										<i class="icon-user"></i>
+										<i class="icon-cog"></i>
 										Registro
 									</a>
 								</li>
-
 
 
 								<li class="divider"></li>
@@ -100,25 +105,115 @@
 		</div>
 
 		<div class="main-container container-fluid">
-			<a class="menu-toggler" id="menu-toggler" href="#">
-				<span class="menu-text"></span>
-			</a>
 			
-			<section class="page-content">
+
 					
-						<h1>Bienvenido al Mensajero RTC</h1>
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab">
+								
+								<li class="active">
+									<a data-toggle="tab" href="#alta_departamento">
+										Registro Departamento
+									</a>
+								</li>
+
+								<li>
+									<a data-toggle="tab" href="#cambio_departamento">
+										Actualizar Departamento
+									</a>
+								</li>	
+
+								<li>
+									<a data-toggle="tab" href="#bajas_departamento">
+										Alta/Baja Departamento
+
+									</a>
+								</li>
+
+							</ul>
+
+
+						<div class="tab-content">
+
+							<div id="alta_departamento" class="tab-pane in active">
+								<form method="post" class="form-horizontal" action="/registro_departamento" autocomplete="off">
+									<h3>Registro de nuevo departamento</h3>
+									<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input>
+
+										<div class="row-fluid">
+											<label for="form-field-select-1">Departamento: </label>
+											<input type="text" name="desdep" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
+										</div>
+										<h4><%= message %></h4>	
+
+									<button class="btn btn-info" type="submit">
+									<i class="icon-ok bigger-110"></i>
+									Guardar
+									</button>
+								</form>
+							</div>
+
+
+						<div id="cambio_departamento" class="tab-pane">
+							<div id="altaorigen" class="tab-pane in active">
+								<form method="post" class="form-horizontal" action="/update_departamento" autocomplete="off">
+									<h3>Actualizacion de Departamentos</h3>
+
+										<div class="row-fluid">
+
+											<select ng-model="dpto"  ng-options="d.coddep as d.desdep for d in dptos"></select>
+											<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input><br><br>
+											<label for="form-field-select-1">Departamento:</label>
+											<input type="text" name="desdep" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
+										</div>
+
+
+									<button class="btn btn-info" type="submit">
+									<i class="icon-ok bigger-110"></i>
+									Guardar
+									</button>
+								</form>
+							</div>
+						</div>
+
+
+
+						<div id="bajas_departamento" class="tab-pane">
+							<div id="bajas" class="tab-pane in active">
+								<form method="post" class="form-horizontal" action="/status_departamento">
+									<h3>Baja de Departamentos</h3>
+									<div class="row-fluid">
+										<label for="form-field-select-1">Departamento: </label>
+										<select ng-model="dpto" ng-options="d.coddep as d.desdep for d in dptos"></select>
+										<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input><br><br>
+
+										<p>Codigo Departamento {{ dpto }}</p>
+									</div>
+									<h3>Cambio de Estatus</h3>
+									<div class="row-fluid">
+										<label for="form-field-select-1">Estatus:</label>
+										<select name="status" id="form-field-select-1">
+											<option value="true">Activar</option>
+											<option value="false">Desactivar</option>
+										</select>
+									</div>
+									<button class="btn btn-info" type="submit">
+									<i class="icon-ok bigger-110"></i>
+									Guardar
+									</button>
+								</form>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>			
+		</div><!--/.page-content-->
+			
+
 						
-						<h1>Help Desk</h1>	
-						<h2><%= newDepartamento.Departamento %></h2>
-						<h2><%= newDepartamento.Descripcion %></h2>
-
-
-			</section>			
-			</div><!--/.page-content-->
-			
-
-			
-
+			    <script type="text/javascript" src="js/angular.js"></script>
+			    <script type="text/javascript" src="js/ubigeo.js"></script>
 				
 
 				<script type="text/javascript">
@@ -176,6 +271,26 @@
 		<!--basic scripts-->
 
 		<!--[if !IE]>-->
+
+		<script>
+		    function soloLetras(e){
+		       key = e.keyCode || e.which;
+		       tecla = String.fromCharCode(key).toLowerCase();
+		       letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
+		       especiales = "8-37-39-46";
+		       tecla_especial = false
+		       for(var i in especiales){
+		            if(key == especiales[i]){
+		                tecla_especial = true;
+		                break;
+		            }
+		        }
+		        if(letras.indexOf(tecla)==-1 && !tecla_especial){
+		            return false;
+		        }
+		    }
+		</script>
+
 
 		<script type="text/javascript">
 			window.jQuery || document.write("<script src=' /js/jquery-2.0.3.min.js'>"+"<"+"/script>");
