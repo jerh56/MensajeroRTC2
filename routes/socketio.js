@@ -9,6 +9,7 @@ var WaitList = require('../models/waitlist.js');
 var Msglist = require('../models/msglist.js');
 var User = require('../models/user.js');
 var Rooms = require('../models/rooms.js');
+var Apartado = require('../models/apartado.js');
 
 
 
@@ -357,6 +358,34 @@ io.sockets.on('connection', function (socket){
                   //     console.log(err);
                   //   }
                   //   else{
+
+                    // localizar el id del agente
+                    Rooms.findOne({roomid:socket.room}, function(err, docRoom){
+                      if (docRoom){
+                        Agentnames.findOne({userid:docRoom.useridagent}, function(err,docUserAgent){
+                          if (docUserAgent){
+                              docUserAgent.cantidad = docUserAgent.cantidad - 1;
+                              docUserAgent.save();
+                              Apartado.findOne({userid:socket.request.user._id}, function(err, docApartado){
+                                if(docApartado){
+                                  docApartado.useridagent = docUserAgent.userid;
+                                  docApartado.fecha_creacion = new Date();
+                                  docApartado.roomid = docRoom.roomid;
+                                }
+                                else{
+                                  newApartado = new Apartado();
+                                  newApartado.useridagent = docUserAgent.userid;
+                                  newApartado.fecha_creacion = new Date();
+                                  newApartado.roomid = docRoom.roomid;
+                                  newApartado.userid = socket.request.user._id;
+                                  newApartado.save();
+                                }
+                              });
+                          }
+                        });
+                      }
+                    });
+
                       console.log(docUserName);
                       docUserName.fecha_desconect = new Date();
                       docUserName.estatus = 0;
@@ -580,6 +609,9 @@ io.sockets.on('connection', function (socket){
         //socket.broadcast.to(agentroom).emit('updatechat', 'MENSAJERO RTC', par_username + ' se ha conectado a ' + par_idroom, '');
         //socket.emit('updaterooms', agentnames, agentroom);
         // console.log('Se conecto el usuario: ' + username);
+
+
+
         Usernames.findOne({ userid: socket.request.user._id }, function(err,docUserName) {
               if (err) {
                   console.log('Error');
@@ -587,7 +619,23 @@ io.sockets.on('connection', function (socket){
               else {
                   docUserName.fecha_conect = new Date();
                   docUserName.estatus = 1;
-                  docUserName.save();         
+                  docUserName.save();  
+
+
+
+
+                  Rooms.findOne({roomid:par_idroom}, function(err, docRoom){
+                      if (docRoom){
+                        Agentnames.findOne({userid:docRoom.useridagent}, function(err,docUserAgent){
+                          if (docUserAgent){
+                              docUserAgent.cantidad = docUserAgent.cantidad + 1;
+                              docUserAgent.save();
+                              //Apartado.remove({userid:socket.request.user._id});
+                          }
+                        });
+                      }
+                    });
+
               }
           });
         if (par_espera == 1){
@@ -679,6 +727,7 @@ io.sockets.on('connection', function (socket){
       // }
       // Obtener numero de rooms que puede atender el agente
       // send client to room por default
+      //resetAgentQuantity(socket.request.user._id); // reseta a 0 el número de usuarios atendidos
       socket.join(idroom);
       //socket.join(agentname+'02');
       // echo to client they've connected
@@ -696,11 +745,13 @@ io.sockets.on('connection', function (socket){
               else {
                   docAgentName.fecha_conect = new Date();
                   docAgentName.estatus = 1;
-                  docAgentName.save();         
+                  docAgentName.cantidad = 0;
+                  docAgentName.save();
+                  reconnectRooms();         
               }
       });
 
-      reconnectRooms();
+     
     }
 
     function reconnectRooms(){
@@ -750,35 +801,55 @@ io.sockets.on('connection', function (socket){
     }
 
     function checkmsg(par_roomid,par_userid,par_username){
-                  Usernames.findOne({userid: par_userid, idroom: par_roomid  }, function(err, docUserName){
-                  if (docUserName){
-                    console.log(docUserName);
-                    if (docUserName.estatus == 1){
-                          //console.log(docUserName);
-                          socket.join(par_roomid);
-                          socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
-                          sendChatMsgList(par_roomid, par_username);
-                        
+          Usernames.findOne({userid: par_userid, idroom: par_roomid  }, function(err, docUserName){
+          if (docUserName){
+            console.log(docUserName);
+            if (docUserName.estatus == 1){
+                  //console.log(docUserName);
+                  socket.join(par_roomid);
+                  socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
+                  sendChatMsgList(par_roomid, par_username);
+                  Agentnames.findOne({ userid: socket.request.user._id},function(err,docAgentName){
+                    if (docAgentName){
+                        docAgentName.cantidad = docAgentName.cantidad + 1;
                     }
-                    else{
-                        console.log(docUserName);
-                        var dSegundosTrans = timeElapsed(docUserName.fecha_desconect);
-                        console.log(dSegundosTrans);
-                        if (dSegundosTrans < (60 * 3)){
-                          socket.join(par_roomid);
-                          socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
-                          sendChatMsgList(par_roomid, par_username);
-                          // socket.join(docRooms[i].roomid);
-                          // socket.broadcast.to(docRooms[i].roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
-                          // sendChatMsgList(docRooms[i].roomid, docRooms[i].username);
-                        }
-                    }
-                  }
-              });
+                  });
+                  //setUsersQuantity(par_roomid); // aumentar la cantidad de usuarios atendidos
+            }
+            else{
+                console.log(docUserName);
+                var dSegundosTrans = timeElapsed(docUserName.fecha_desconect);
+                console.log(dSegundosTrans);
+                if (dSegundosTrans < (60 * 3)){
+                  socket.join(par_roomid);
+                  socket.broadcast.to(par_roomid).emit('updatechat', 'SERVER',  'Te atiende: ' +  socket.request.user.username, '');
+                  sendChatMsgList(par_roomid, par_username);
+                  //setUsersQuantity(par_roomid); // aumentar la cantidad de usuarios atendidos
+                }
+            }
+          }
+      });
     }
-
-
-    
+    function setUsersQuantity(par_roomid){
+      Rooms.findOne({roomid: par_roomid}, function(err, docRooms){  
+        if (docRooms){
+          console.log("Rooms", docRooms);
+          console.log(docRooms.useridagent);
+          Agentnames.findOneAndUpdate(
+            { userid: docRooms.useridagent},
+            { $inc: { cantidad: 1 } }
+          );
+        } 
+      });
+    }
+    function resetAgentQuantity(par_agentid){
+       console.log("se reseteó la cantidad de usuarios", par_agentid);
+        
+        Agentnames.findOneAndUpdate(
+          { userid: par_agentid},
+          { $set: { cantidad: 0 } }
+        );
+    }
   });
  return router;
 };
