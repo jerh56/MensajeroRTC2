@@ -138,8 +138,7 @@
 							<div id="alta_departamento" class="tab-pane in active">
 								<form method="post" class="form-horizontal" action="/registro_departamento" autocomplete="off">
 									<h3>Registro de nuevo departamento</h3>
-									<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input>
-
+									
 										<div class="row-fluid">
 											<label for="form-field-select-1">Departamento: </label>
 											<input type="text" name="desdep" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
@@ -161,9 +160,9 @@
 
 										<div class="row-fluid">
 
-											<select ng-model="dpto"  ng-options="d.coddep as d.desdep for d in dptos"></select>
-											<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input><br><br>
-											<label for="form-field-select-1">Departamento:</label>
+											<select ng-model="departamento"  ng-options="d.coddep as d.desdep for d in departamentos"></select>				
+											<input style="display:none" ng-model="departamento" name="coddep" ng-options="d.coddep as d.desdep for d in departamentos"></input><br><br>
+											<label for="form-field-select-1">Código Departamento: {{	departamento}}</label>
 											<input type="text" name="desdep" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
 										</div>
 
@@ -184,10 +183,10 @@
 									<h3>Baja de Departamentos</h3>
 									<div class="row-fluid">
 										<label for="form-field-select-1">Departamento: </label>
-										<select ng-model="dpto" ng-options="d.coddep as d.desdep for d in dptos"></select>
-										<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input><br><br>
+										<select ng-model="departamento" ng-options="d.coddep as d.desdep for d in departamentos"></select>
+										<input style="display:none" ng-model="departamento" name="coddep" ng-options="d.coddep as d.desdep for d in departamentos"></input><br><br>
 
-										<p>Codigo Departamento {{ dpto }}</p>
+										<p>Código Departamento {{departamento}}
 									</div>
 									<h3>Cambio de Estatus</h3>
 									<div class="row-fluid">
@@ -213,7 +212,7 @@
 
 						
 			    <script type="text/javascript" src="js/angular.js"></script>
-			    <script type="text/javascript" src="js/ubigeo.js"></script>
+			    <script type="text/javascript" src="js/tipificacion.js"></script>
 				
 
 				<script type="text/javascript">

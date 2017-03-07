@@ -109,8 +109,8 @@
 			<div class="selec-depa">
 					<div class="row-fluid">
 						<label for="form-field-select-1">Seleccion Departamento</label>
-							<select ng-model="dpto" ng-change="cargarTipi()" ng-options="d.coddep as d.desdep for d in dptos"></select>	
-							<p>Departamento {{ dpto }}</p>	
+							<select ng-model="departamento" ng-change="cargarIncidencia()" ng-options="d.coddep as d.desdep for d in departamentos"></select>	
+							<p>Departamento:  {{departamento}}</p>
 					</div>
 				</div>
 					
@@ -155,7 +155,7 @@
 							<div id="altaincidencia" class="tab-pane in active">
 								<form method="post" class="form-horizontal" action="/registroincidencia" autocomplete="off">
 									<h3>Registro de Tipifiacacion de Incidencias</h3>
-									<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input>
+									<input  ng-model="departamento" style="display:none" name="coddep" ng-options="d.coddep as d.desdep for d in departamentos"></input>
 
 										<div class="row-fluid">
 											<label for="form-field-select-1">Incidencia</label>
@@ -200,11 +200,11 @@
 									<h3>Baja de Tipificacion de Incidencias</h3>
 									<div class="row-fluid">
 										<label for="form-field-select-1">Incidencia</label>
-											<select ng-model="tipi" ng-change="cargarOrig()">
-												<option ng-repeat="p in tipis" value="{{p.codpro}}">{{p.despro}}</option>
+											<select ng-model="incidencia" ng-change="cargarOrigen()">
+												<option ng-repeat="p in incidencias" value="{{p.codpro}}">{{p.despro}}</option> 
 											</select>
-											<input ng-model="tipi" name="codpro" style="display:none" ng-options="d.coddep as d.desdep for d in dptos"></input>
-										<p>Codigo Incidencia {{ tipi }}</p>
+											<input ng-model="incidencia" name="codpro" style="display:none" ng-options="d.coddep as d.desdep for d in departamentos"></input>
+										<p>Código Incidencia: {{ incidencia }}</p>
 									</div>
 									<h3>Cambio de Estatus</h3>
 									<div class="row-fluid">
@@ -230,11 +230,11 @@
 									<h3>Cambios de Tipifiacacion de Incidencias</h3>
 										<div class="row-fluid">										
 											<label for="form-field-select-1">Incidencia</label>
-												<select ng-model="tipi" ng-change="cargarOrig()">
-													<option ng-repeat="p in tipis" value="{{p.codpro}}">{{p.despro}}</option>
+												<select ng-model="incidencia" ng-change="cargarOrigen()">
+													<option ng-repeat="p in incidencias" value="{{p.codpro}}">{{p.despro}}</option>
 												</select>
-												<p>Codigo Incidencia: {{ tipi }}</p>
-												<input ng-model="tipi" name="codpro" style="display:none" ng-options="d.coddep as d.desdep for d in dptos"></input>
+												<p>Código Incidencia: {{ incidencia }}</p>
+												<input ng-model="incidencia" name="codpro" style="display:none" ng-options="d.coddep as d.desdep for d in departamentos"></input>
 											<div class="row-fluid">
 												<input type="text" name="despro" id="form-field-1" placeholder="Actualiza la Incidencia" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required></input>
 											</div>
@@ -258,11 +258,11 @@
 
 											<label for="form-field-select-1">Origen: </label>
 
-            								<select ng-model="orig" ng-options="o.codorig as o.desorig for o in origs"></select>
+            								<select ng-model="origen" ng-options="o.codorig as o.desorig for o in origenes"></select>
 
 
-												<p>Codigo Origen: {{ orig }}</p>
-												<input ng-model="orig" name="codorig" style="display:none" ng-options="d.codoirg as d.desorig for d in origs"></input>
+												<p>Código Origen: {{ origen }}</p>
+												<input ng-model="origen" name="codorig" style="display:none" ng-options="d.codoirg as d.desorig for d in origenes"></input>
 											<div class="row-fluid">
 												<input type="text" name="desorig" id="form-field-1" placeholder="Actualiza el origen" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required></input>
 											</div>
@@ -288,7 +288,7 @@
 
 						
 			    <script type="text/javascript" src="js/angular.js"></script>
-			    <script type="text/javascript" src="js/ubigeo.js"></script>
+			    <script type="text/javascript" src="js/tipificacion.js"></script>
 				
 
 				<script type="text/javascript">

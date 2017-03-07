@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 
-
 // FLASH
 var flash = require('connect-flash'); // middleware para mensajes en passport
 // FLASH
@@ -34,6 +33,7 @@ app.io = require('socket.io')();
 // SOCKET.IO
 
 
+
 //REDIS
 var RedisConf = JSON.parse(process.env.REDIS_CONF);
 var session = require('express-session'); // Manejo de sesiones
@@ -46,6 +46,19 @@ var sessionRedis = new RedisStore({
  });
 // REDIS
 
+
+/*
+//REDIS LOCAL
+var session = require('express-session'); // Manejo de sesiones
+var RedisStore = require('connect-redis')(session); // conexión a REDIS para almacenar sesiones de usuario
+var sessionRedis = new RedisStore({
+   host: '127.0.0.1',
+   port: 6379,
+   db: 0,
+   //pass: '1j79ol4f'
+ });
+//REDIS LOCAL
+*/
 
 // PASSPORT
 var passport = require('passport');

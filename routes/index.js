@@ -1,5 +1,4 @@
 var express = require('express');
-var http = require("http");
 var router = express.Router();
 var flash = require('connect-flash');
 var passport = require('passport');
@@ -8,7 +7,7 @@ var Dialogo = require('../models/dialogo.js');
 var Origen = require('../models/orig.js');
 var Empresa = require('../models/empresa.js');
 var Departamento = require('../models/departamento.js');
-var ubigeo = require('../controllers/ubigeo');
+var Tipificacion_Controller = require('../controllers/tipificacion');
 var dialogo = require('../controllers/lista_mensaje');
 var Descripcion = require('../models/descripcion.js');
 
@@ -19,21 +18,15 @@ router.get('/lista_mensaje', function(req,res){
   res.render('lista_mensaje');
 });
 
-//router.get('/tipificacion', ubigeo.tipificacion);
-router.get('/tipificacion/db/departamento', ubigeo.dpto);
-router.get('/tipificacion/db/tipi/:cd', ubigeo.tipi);
-router.get('/tipificacion/db/orig/', ubigeo.orig);
+
+router.get('/tipificacion/db/departamento', Tipificacion_Controller.departamento);
+router.get('/tipificacion/db/incidencia/:incidencia', Tipificacion_Controller.incidencia);
+router.get('/tipificacion/db/origen/', Tipificacion_Controller.origen);
 
 
 router.get('/dialogos/db/departamento', dialogo.dpto);
 router.get('/dialogos/db/dialogo/:cd', dialogo.dialogo);
 
-
-router.get('/listas', require('connect-ensure-login').ensureLoggedIn('/login'), function (req, res) {
-  //res.sendFile(__dirname + '/indexUser.html');
-
-  res.render('listas', ubigeo.listas);
-});
 
 router.get('/configuracion', require('connect-ensure-login').ensureLoggedIn('/login'), function (req, res) {
   //res.sendFile(__dirname + '/indexUser.html');
@@ -210,7 +203,7 @@ router.get('/administrador', function (req,res){
   res.render('administrador');
 });
 
-router.get('/tipificacion', function(req,res){
+router.get('/tipificacion', require('connect-ensure-login').ensureLoggedIn('/ag_login'), function(req,res){
 
   var msjres = req.flash('message');
   res.render('tipificacion', {message: msjres[0], user: req.user} );
@@ -232,8 +225,8 @@ router.post('/registroincidencia', function(req, res){
     else{
 
         var countinci = req.body.coddep * 100; 
-        console.log('Codigo Departamento: '+req.body.coddep);
-        console.log('Codigo Incidencia: '+countinci);
+        console.log('Código Departamento: '+req.body.coddep);
+        console.log('Código Incidencia: '+countinci);
 
         Tipificacion.count( { $and: [ {"codpro":{$gte:countinci}}, {"codpro":{$lt: countinci+100}} ]}, function(err,nCount){
 
