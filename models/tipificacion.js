@@ -18,7 +18,7 @@ MongoClient.connect(url, function(err, db) {
 
     exports.cargarOrigen = function(orig) {//co
 
-        var Origen = db.collection('origs');
+        var Origen = db.collection('origenes');
 
         Origen.find().toArray(function(err, results) {
             orig(results);
@@ -27,12 +27,12 @@ MongoClient.connect(url, function(err, db) {
 
     exports.cargarIncidencia = function(incidencia, dpto) {//cd
 
-        var Incidencia = db.collection('tipis');
+        var Incidencia = db.collection('incidencias');
 
-        Incidencia.find({coddep: incidencia}).toArray(function(err, results) {
+        Incidencia.find({ $and: [ {coddep: incidencia}, {status : true} ]}).toArray(function(err, results) {
+
             dpto(results);
+
         });
     };
-
-
 });

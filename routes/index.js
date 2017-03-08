@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 var flash = require('connect-flash');
 var passport = require('passport');
-var Tipificacion = require('../models/tipi.js');
+var Incidencia = require('../models/incidencia.js');
 var Dialogo = require('../models/dialogo.js');
-var Origen = require('../models/orig.js');
+var Origen = require('../models/origen.js');
 var Empresa = require('../models/empresa.js');
 var Departamento = require('../models/departamento.js');
 var Tipificacion_Controller = require('../controllers/tipificacion');
-var dialogo = require('../controllers/lista_mensaje');
+var Dialogo_Controller = require('../controllers/lista_mensaje');
 var Descripcion = require('../models/descripcion.js');
 
 
@@ -24,8 +24,8 @@ router.get('/tipificacion/db/incidencia/:incidencia', Tipificacion_Controller.in
 router.get('/tipificacion/db/origen/', Tipificacion_Controller.origen);
 
 
-router.get('/dialogos/db/departamento', dialogo.dpto);
-router.get('/dialogos/db/dialogo/:cd', dialogo.dialogo);
+router.get('/dialogos/db/departamento', Dialogo_Controller.dpto);
+router.get('/dialogos/db/dialogo/:cd', Dialogo_Controller.dialogo);
 
 
 router.get('/configuracion', require('connect-ensure-login').ensureLoggedIn('/login'), function (req, res) {
@@ -215,8 +215,10 @@ router.get('/tipificacion', require('connect-ensure-login').ensureLoggedIn('/ag_
 router.post('/registroincidencia', function(req, res){
 
   var despro = req.body.despro;
+  var coddep = req.body.coddep
 
-  Tipificacion.findOne({"despro": despro}, function(err, doc){
+  Incidencia.findOne({$and:[{"coddep":coddep} , {"despro":despro}]}, function(err, doc){
+
 
     if (doc){
       console.log('Ya existe esta incidencia');
@@ -228,14 +230,14 @@ router.post('/registroincidencia', function(req, res){
         console.log('Código Departamento: '+req.body.coddep);
         console.log('Código Incidencia: '+countinci);
 
-        Tipificacion.count( { $and: [ {"codpro":{$gte:countinci}}, {"codpro":{$lt: countinci+100}} ]}, function(err,nCount){
+        Incidencia.count( { $and: [ {"codpro":{$gte:countinci}}, {"codpro":{$lt: countinci+100}} ]}, function(err,nCount){
 
-            var newTipificacion = new Tipificacion();
-            newTipificacion.codpro = countinci+nCount+1;
-            newTipificacion.despro = req.body.despro;
-            newTipificacion.coddep = req.body.coddep;
+            var newIncidencia = new Incidencia();
+            newIncidencia.codpro = countinci+nCount+1;
+            newIncidencia.despro = req.body.despro;
+            newIncidencia.coddep = req.body.coddep;
 
-            newTipificacion.save(function(err){
+            newIncidencia.save(function(err){
                
                 if (err){
                     console.log('No se pudo guardar el incidencia: '+err);
@@ -288,7 +290,7 @@ router.post('/updatestatus', function(req,res){
 
   var codpro = req.body.codpro;
 
-  Tipificacion.findOne({"codpro": codpro}, function(err, doc){
+  Incidencia.findOne({"codpro": codpro}, function(err, doc){
 
     if (err || !doc){
       console.log(err);      
@@ -319,7 +321,7 @@ router.post('/tipificacionupdate', function(req,res){
 
   var codpro = req.body.codpro;
 
-  Tipificacion.findOne({"codpro": codpro}, function(err, doc){
+  Incidencia.findOne({"codpro": codpro}, function(err, doc){
 
     if (err || !doc){
       console.log(err);      

@@ -8,4 +8,4 @@ var DescripcionSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Descripcion', DescripcionSchema);
+module.exports = mongoose.model('Descripciones', DescripcionSchema);
