@@ -19,7 +19,7 @@ MongoClient.connect(url, function(err, db) {
 
         var Dialogo = db.collection('dialogos');
 
-        Dialogo.find({coddep: cd}).toArray(function(err, results) {
+        Dialogo.find({codigo_departamento: cd}).toArray(function(err, results) {
             cb(results);
         });
     };

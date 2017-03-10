@@ -141,7 +141,7 @@
 									
 										<div class="row-fluid">
 											<label for="form-field-select-1">Departamento: </label>
-											<input type="text" name="desdep" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
+											<input type="text" name="descripcion_departamento" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
 										</div>
 										<h4><%= message %></h4>	
 
@@ -160,10 +160,10 @@
 
 										<div class="row-fluid">
 
-											<select ng-model="departamento"  ng-options="d.coddep as d.desdep for d in departamentos"></select>				
-											<input style="display:none" ng-model="departamento" name="coddep" ng-options="d.coddep as d.desdep for d in departamentos"></input><br><br>
+											<select ng-model="departamento"  ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></select>				
+											<input style="display:none" ng-model="departamento" name="codigo_departamento" ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></input><br><br>
 											<label for="form-field-select-1">Código Departamento: {{	departamento}}</label>
-											<input type="text" name="desdep" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
+											<input type="text" name="descripcion_departamento" id="form-field-1" placeholder="Ej.- Bodega Muebles" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
 										</div>
 
 
@@ -183,8 +183,8 @@
 									<h3>Baja de Departamentos</h3>
 									<div class="row-fluid">
 										<label for="form-field-select-1">Departamento: </label>
-										<select ng-model="departamento" ng-options="d.coddep as d.desdep for d in departamentos"></select>
-										<input style="display:none" ng-model="departamento" name="coddep" ng-options="d.coddep as d.desdep for d in departamentos"></input><br><br>
+										<select ng-model="departamento" ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></select>
+										<input style="display:none" ng-model="departamento" name="codigo_departamento" ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></input><br><br>
 
 										<p>Código Departamento {{departamento}}
 									</div>

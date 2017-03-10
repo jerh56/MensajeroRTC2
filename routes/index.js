@@ -103,7 +103,7 @@ router.get('/usuario', require('connect-ensure-login').ensureLoggedIn('/login'),
 
         var newDescripcion = new Descripcion();
 
-        newDescripcion.coddep = req.body.coddep;
+        newDescripcion.codigo_departamento = req.body.codigo_departamento;
         newDescripcion.descripcion = req.body.descripcion;
 
       newDescripcion.save(function(err) {
@@ -214,10 +214,10 @@ router.get('/tipificacion', require('connect-ensure-login').ensureLoggedIn('/ag_
 //REGISTRO DE INCIDENCIAS
 router.post('/registroincidencia', function(req, res){
 
-  var despro = req.body.despro;
-  var coddep = req.body.coddep
+  var descripcion_incidencia = req.body.descripcion_incidencia;
+  var codigo_departamento = req.body.codigo_departamento
 
-  Incidencia.findOne({$and:[{"coddep":coddep} , {"despro":despro}]}, function(err, doc){
+  Incidencia.findOne({$and:[{"codigo_departamento":codigo_departamento} , {"descripcion_incidencia":descripcion_incidencia}]}, function(err, doc){
 
 
     if (doc){
@@ -226,16 +226,16 @@ router.post('/registroincidencia', function(req, res){
     }
     else{
 
-        var countinci = req.body.coddep * 100; 
-        console.log('Código Departamento: '+req.body.coddep);
+        var countinci = req.body.codigo_departamento * 100; 
+        console.log('Código Departamento: '+req.body.codigo_departamento);
         console.log('Código Incidencia: '+countinci);
 
-        Incidencia.count( { $and: [ {"codpro":{$gte:countinci}}, {"codpro":{$lt: countinci+100}} ]}, function(err,nCount){
+        Incidencia.count( { $and: [ {"codigo_incidencia":{$gte:countinci}}, {"codigo_incidencia":{$lt: countinci+100}} ]}, function(err,nCount){
 
             var newIncidencia = new Incidencia();
-            newIncidencia.codpro = countinci+nCount+1;
-            newIncidencia.despro = req.body.despro;
-            newIncidencia.coddep = req.body.coddep;
+            newIncidencia.codigo_incidencia = countinci+nCount+1;
+            newIncidencia.descripcion_incidencia = req.body.descripcion_incidencia;
+            newIncidencia.codigo_departamento = req.body.codigo_departamento;
 
             newIncidencia.save(function(err){
                
@@ -263,8 +263,8 @@ router.post('/registroorigen', function(req, res){
     Origen.count({}, function(err,nCount){
 
         var newOrigen = new Origen();
-        newOrigen.codorig = nCount+1;
-        newOrigen.desorig = req.body.desorig;
+        newOrigen.codigo_origen = nCount+1;
+        newOrigen.descripcion_origen = req.body.descripcion_origen;
 
 
         newOrigen.save(function(err){
@@ -288,9 +288,9 @@ router.post('/registroorigen', function(req, res){
 
 router.post('/updatestatus', function(req,res){
 
-  var codpro = req.body.codpro;
+  var codigo_incidencia = req.body.codigo_incidencia;
 
-  Incidencia.findOne({"codpro": codpro}, function(err, doc){
+  Incidencia.findOne({"codigo_incidencia": codigo_incidencia}, function(err, doc){
 
     if (err || !doc){
       console.log(err);      
@@ -306,7 +306,7 @@ router.post('/updatestatus', function(req,res){
         else
         {
 
-      console.log('Codpro: '+ codpro);
+      console.log('codigo_incidencia: '+ codigo_incidencia);
       console.log('Se actualizo Incidencia' +doc);
       res.render('tipificacion', {message: 'Se actualizo correctamente', user: req.user})
           
@@ -319,16 +319,16 @@ router.post('/updatestatus', function(req,res){
 
 router.post('/tipificacionupdate', function(req,res){
 
-  var codpro = req.body.codpro;
+  var codigo_incidencia = req.body.codigo_incidencia;
 
-  Incidencia.findOne({"codpro": codpro}, function(err, doc){
+  Incidencia.findOne({"codigo_incidencia": codigo_incidencia}, function(err, doc){
 
     if (err || !doc){
       console.log(err);      
     }
     else{
 
-      doc.despro = req.body.despro;
+      doc.descripcion_incidencia = req.body.descripcion_incidencia;
 
         doc.save(function(err){
         if (err){
@@ -352,16 +352,16 @@ router.post('/tipificacionupdate', function(req,res){
 
 router.post('/origenupdate', function(req,res){
 
-  var codorig = req.body.codorig;
+  var codigo_origen = req.body.codigo_origen;
 
-  Origen.findOne({"codorig": codorig}, function(err, doc){
+  Origen.findOne({"codigo_origen": codigo_origen}, function(err, doc){
 
     if (err || !doc){
       console.log(err);      
     }
     else{
 
-      doc.desorig = req.body.desorig;
+      doc.descripcion_origen = req.body.descripcion_origen;
 
         doc.save(function(err){
         if (err){
@@ -394,21 +394,21 @@ router.post('/dialogos', function(req, res){
 
   var tecla1 = req.body.tecla_1;
   var tecla2 = req.body.tecla_2;
-  var coddep = req.body.coddep;
-  var coddial = coddep*100;
+  var codigo_departamento = req.body.codigo_departamento;
+  var codigo_dialogo = codigo_departamento*100;
 
-  Dialogo.findOne({$and: [ {"tecla_1": tecla1}, {"tecla_2": tecla2}, {"coddep": coddep}]}, function(err, doc){
+  Dialogo.findOne({$and: [ {"tecla_1": tecla1}, {"tecla_2": tecla2}, {"codigo_departamento": codigo_departamento}]}, function(err, doc){
 
     if (!doc)
     {
 
-      Dialogo.count({$and: [ {"coddep":{$gte:coddep}}, {"coddep":{$lt: coddial+100}} ]}, function (err, nCount){
+      Dialogo.count({$and: [ {"codigo_departamento":{$gte:codigo_departamento}}, {"codigo_departamento":{$lt: codigo_dialogo+100}} ]}, function (err, nCount){
 
          var newDialogo = new Dialogo();
                 
-                newDialogo.coddial = coddial+nCount+1;
-                newDialogo.desdia = req.body.desdia;
-                newDialogo.coddep = req.body.coddep;
+                newDialogo.codigo_dialogo = codigo_dialogo+nCount+1;
+                newDialogo.descripcion_dialogo = req.body.descripcion_dialogo;
+                newDialogo.codigo_departamento = req.body.codigo_departamento;
                 newDialogo.tecla_1 = req.body.tecla_1;
                 newDialogo.tecla_2 =  req.body.tecla_2;
                 
@@ -442,9 +442,9 @@ router.post('/dialogos', function(req, res){
 
 router.post('/dialogosupdate', function(req,res){
 
- var coddial = req.body.coddial;
+ var codigo_dialogo = req.body.codigo_dialogo;
 
-  Dialogo.findOne({"coddial": coddial}, function(err, doc){
+  Dialogo.findOne({"codigo_dialogo": codigo_dialogo}, function(err, doc){
 
     if (err || !doc){
       console.log(err);  
@@ -452,7 +452,7 @@ router.post('/dialogosupdate', function(req,res){
     }
     else{
 
-      doc.desdia = req.body.desdia;
+      doc.descripcion_dialogo = req.body.descripcion_dialogo;
 
         doc.save(function(err){
         if (err){
@@ -461,7 +461,7 @@ router.post('/dialogosupdate', function(req,res){
         else
         {
 
-      console.log('Coddial: '+ coddial);
+      console.log('codigo_dialogo: '+ codigo_dialogo);
       console.log('Se actualizo Dialogo' +doc);
       res.render('dialogos', {message: 'Se actualizo el dialogo correctamente', user: req.user})
           
@@ -569,8 +569,8 @@ router.post('/registro_departamento', function(req, res){
 
         var newDepartamento = new Departamento();
 
-        newDepartamento.desdep = req.body.desdep
-        newDepartamento.coddep = nCount + 1;
+        newDepartamento.descripcion_departamento = req.body.descripcion_departamento
+        newDepartamento.codigo_departamento = nCount + 1;
 
         newDepartamento.save(function(err) {
 
@@ -586,19 +586,19 @@ router.post('/registro_departamento', function(req, res){
     });    
 });
 
-//Función para actualizar la descripccion de los departamentos (desdep).
+//Función para actualizar la descripccion de los departamentos (descripcion_departamento).
 router.post('/update_departamento', function(req,res){
 
-    var coddep = req.body.coddep;
+    var codigo_departamento = req.body.codigo_departamento;
 
-    Departamento.findOne({"coddep": coddep}, function(err, doc){
+    Departamento.findOne({"codigo_departamento": codigo_departamento}, function(err, doc){
 
         if (err || !doc){
             console.log(err);      
         }
         else{
 
-            doc.desdep = req.body.desdep;
+            doc.descripcion_departamento = req.body.descripcion_departamento;
 
             doc.save(function(err){
                 if (err){
@@ -620,9 +620,9 @@ router.post('/update_departamento', function(req,res){
 //Función para actualizar el status de un departamento.
 router.post('/status_departamento', function(req,res){
 
-    var coddep = req.body.coddep;
+    var codigo_departamento = req.body.codigo_departamento;
 
-    Departamento.findOne({"coddep": coddep}, function(err, doc){
+    Departamento.findOne({"codigo_departamento": codigo_departamento}, function(err, doc){
 
         if (err || !doc){
             console.log(err);      

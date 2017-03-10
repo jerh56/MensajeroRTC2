@@ -16,13 +16,13 @@
 
             <label>Departamento :</label>
 
-            <select ng-model="dpto" ng-change="cargarDialogo()" ng-options="d.coddep as d.desdep for d in dptos"></select>
+            <select ng-model="dpto" ng-change="cargarDialogo()" ng-options="d.codigo_departamento as d.descripcion_departamento for d in dptos"></select>
 
             <label>Tipificaciones :</label>
 
             <select ng-model="dialogo" >
 
-                <option ng-repeat="p in dialogos" value="{{p.coddial}}">{{p.desdia}}</option>
+                <option ng-repeat="p in dialogos" value="{{p.codigo_dialogo}}">{{p.descripcion_dialogo}}</option>
 
             </select>
 

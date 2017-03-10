@@ -29,7 +29,7 @@ MongoClient.connect(url, function(err, db) {
 
         var Incidencia = db.collection('incidencias');
 
-        Incidencia.find({ $and: [ {coddep: incidencia}, {status : true} ]}).toArray(function(err, results) {
+        Incidencia.find({ $and: [ {codigo_departamento: incidencia}, {status : true} ]}).toArray(function(err, results) {
 
             dpto(results);
 

@@ -1,13 +1,9 @@
 var mongoose = require('mongoose');
-
-	// RegistroEmpresa Schema
-	var IncidenciaSchema = mongoose.Schema({
-		
-		codpro:		String,
-		despro:		String,
-		coddep:		String,
-		status: 	{type:Boolean, default: true}
-
-	});
+var IncidenciaSchema = mongoose.Schema({		
+	codigo_incidencia:		String,
+	descripcion_incidencia:		String,
+	codigo_departamento:		String,
+	status: 	{type:Boolean, default: true}
+});
 
 module.exports = mongoose.model('Incidencias', IncidenciaSchema);

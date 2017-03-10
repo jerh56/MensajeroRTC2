@@ -6,7 +6,7 @@ app.controller('TipificacionCtrl', function($scope, $http) {
     $http.get('/tipificacion/db/departamento')
         .success(function(data) {
             $scope.departamentos = data;
-            $scope.departamento = data[0].coddep;
+            $scope.departamento = data[0].codigo_departamento;
 
             $scope.cargarIncidencia();
         });
@@ -16,7 +16,7 @@ app.controller('TipificacionCtrl', function($scope, $http) {
             .success(function(data) {
 
                 $scope.incidencias = data;
-                $scope.incidencia = data[0].codpro;
+                $scope.incidencia = data[0].codigo_incidencia;
 
             });
     };
@@ -26,7 +26,7 @@ app.controller('TipificacionCtrl', function($scope, $http) {
             .success(function(data){
 
                 $scope.origenes = data;
-                $scope.origen = data[0].codorig;
+                $scope.origen = data[0].codigo_origen;
 
             });
     //};

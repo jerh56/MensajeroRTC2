@@ -107,7 +107,7 @@
 					<div class="row-fluid">
 						<label for="form-field-select-1">Seleccion Departamento</label>								
 
-						<select ng-model="dpto" ng-change="cargarDialogo()" ng-options="d.coddep as d.desdep for d in dptos"></select>
+						<select ng-model="dpto" ng-change="cargarDialogo()" ng-options="d.codigo_departamento as d.descripcion_departamento for d in dptos"></select>
 
 					</div>
 				</div>
@@ -136,9 +136,9 @@
 							<form method="post" class="form-horizontal" action="/dialogos">
 								<h3>Registro de Dialogos Predeterminados</h3>
 									<div class="row-fluid">
-									<input style="display:none" ng-model="dpto" name="coddep" ng-options="d.coddep as d.desdep for d in dptos"></input>
+									<input style="display:none" ng-model="dpto" name="codigo_departamento" ng-options="d.codigo_departamento as d.descripcion_departamento for d in dptos"></input>
 										<label for="form-field-select-1">Dialogo</label>
-										<input name="desdia" type="text" id="form-field-1" placeholder="Dialogo" required>
+										<input name="descripcion_dialogo" type="text" id="form-field-1" placeholder="Dialogo" required>
 									</div>
 									<div class="row-fluid">
 										<label for="form-field-select-1">Tecla de Comando</label>
@@ -185,9 +185,9 @@
 								<h3>Baja de Dialogo Predeterminado</h2>
 									<div class="row-fluid">
 										<select ng-model="dialogo" >
-										<option ng-repeat="p in dialogos" value="{{p.coddial}}">{{p.desdia}}</option>
+										<option ng-repeat="p in dialogos" value="{{p.codigo_dialogo}}">{{p.descripcion_dialogo}}</option>
 										</select>
-										<p><input  style="display:none" name="coddial" ng-model="dialogo" ></input></p>
+										<p><input  style="display:none" name="codigo_dialogo" ng-model="dialogo" ></input></p>
 										<p>Dodigo Departamento: {{ dpto }}</p>
 										<p>Código dialogo: {{ dialogo }}</p>
 									</div>
@@ -209,9 +209,9 @@
 										<label for="form-field-select-1">Dialogo</label>
 										
 										<select ng-model="dialogo" >
-										<option ng-repeat="p in dialogos" value="{{p.coddial}}">{{p.desdia}}</option>
+										<option ng-repeat="p in dialogos" value="{{p.codigo_dialogo}}">{{p.descripcion_dialogo}}</option>
 										</select>
-										<p><input  style="display:none" name="coddial" ng-model="dialogo" ></input></p>
+										<p><input  style="display:none" name="codigo_dialogo" ng-model="dialogo" ></input></p>
 										<p>Dodigo Departamento: {{ dpto }}</p>
 										<p>Código dialogo: {{ dialogo }}</p>
 
@@ -219,7 +219,7 @@
 									</div>
 										<div class="row-fluid">
 										<label for="form-field-select-1">Cambio</label>
-										<input type="text" name="desdia" id="form-field-1" placeholder="Dialogo" required>
+										<input type="text" name="descripcion_dialogo" id="form-field-1" placeholder="Dialogo" required>
 									</div>
 
 

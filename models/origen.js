@@ -1,12 +1,7 @@
 var mongoose = require('mongoose');
-
-// RegistroEmpresa Schema
-var OrigenSchema = mongoose.Schema({
-	
-	codorig: 		String,
-	desorig: 		String,
-
-
+var OrigenSchema = mongoose.Schema({	
+	codigo_origen: String,
+	descripcion_origen: String,
 });
 
 module.exports = mongoose.model('Origenes', OrigenSchema);

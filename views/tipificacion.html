@@ -109,7 +109,7 @@
 			<div class="selec-depa">
 					<div class="row-fluid">
 						<label for="form-field-select-1">Seleccion Departamento</label>
-							<select ng-model="departamento" ng-change="cargarIncidencia()" ng-options="d.coddep as d.desdep for d in departamentos"></select>	
+							<select ng-model="departamento" ng-change="cargarIncidencia()" ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></select>	
 							<p>Departamento:  {{departamento}}</p>
 					</div>
 				</div>
@@ -155,11 +155,11 @@
 							<div id="altaincidencia" class="tab-pane in active">
 								<form method="post" class="form-horizontal" action="/registroincidencia" autocomplete="off">
 									<h3>Registro de Tipifiacacion de Incidencias</h3>
-									<input  ng-model="departamento" style="display:none" name="coddep" ng-options="d.coddep as d.desdep for d in departamentos"></input>
+									<input  ng-model="departamento" style="display:none" name="codigo_departamento" ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></input>
 
 										<div class="row-fluid">
 											<label for="form-field-select-1">Incidencia</label>
-											<input type="text" name="despro" id="form-field-1" placeholder="Registra una nueva Incidencia" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
+											<input type="text" name="descripcion_incidencia" id="form-field-1" placeholder="Registra una nueva Incidencia" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
 										</div>
 										<h4><%= message %></h4>	
 
@@ -178,7 +178,7 @@
 
 										<div class="row-fluid">
 											<label for="form-field-select-1">Origen:</label>
-											<input type="text" name="desorig" id="form-field-1" placeholder="Registra un nuevo origen" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
+											<input type="text" name="descripcion_origen" id="form-field-1" placeholder="Registra un nuevo origen" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required>
 										</div>
 
 
@@ -201,9 +201,9 @@
 									<div class="row-fluid">
 										<label for="form-field-select-1">Incidencia</label>
 											<select ng-model="incidencia" ng-change="cargarOrigen()">
-												<option ng-repeat="p in incidencias" value="{{p.codpro}}">{{p.despro}}</option> 
+												<option ng-repeat="p in incidencias" value="{{p.codigo_incidencia}}">{{p.descripcion_incidencia}}</option> 
 											</select>
-											<input ng-model="incidencia" name="codpro" style="display:none" ng-options="d.coddep as d.desdep for d in departamentos"></input>
+											<input ng-model="incidencia" name="codigo_incidencia" style="display:none" ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></input>
 										<p>Código Incidencia: {{ incidencia }}</p>
 									</div>
 									<h3>Cambio de Estatus</h3>
@@ -231,12 +231,12 @@
 										<div class="row-fluid">										
 											<label for="form-field-select-1">Incidencia</label>
 												<select ng-model="incidencia" ng-change="cargarOrigen()">
-													<option ng-repeat="p in incidencias" value="{{p.codpro}}">{{p.despro}}</option>
+													<option ng-repeat="p in incidencias" value="{{p.codigo_incidencia}}">{{p.descripcion_incidencia}}</option>
 												</select>
 												<p>Código Incidencia: {{ incidencia }}</p>
-												<input ng-model="incidencia" name="codpro" style="display:none" ng-options="d.coddep as d.desdep for d in departamentos"></input>
+												<input ng-model="incidencia" name="codigo_incidencia" style="display:none" ng-options="d.codigo_departamento as d.descripcion_departamento for d in departamentos"></input>
 											<div class="row-fluid">
-												<input type="text" name="despro" id="form-field-1" placeholder="Actualiza la Incidencia" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required></input>
+												<input type="text" name="descripcion_incidencia" id="form-field-1" placeholder="Actualiza la Incidencia" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required></input>
 											</div>
 										</div>								
 								
@@ -258,13 +258,13 @@
 
 											<label for="form-field-select-1">Origen: </label>
 
-            								<select ng-model="origen" ng-options="o.codorig as o.desorig for o in origenes"></select>
+            								<select ng-model="origen" ng-options="o.codigo_origen as o.descripcion_origen for o in origenes"></select>
 
 
 												<p>Código Origen: {{ origen }}</p>
-												<input ng-model="origen" name="codorig" style="display:none" ng-options="d.codoirg as d.desorig for d in origenes"></input>
+												<input ng-model="origen" name="codigo_origen" style="display:none" ng-options="d.codoirg as d.descripcion_origen for d in origenes"></input>
 											<div class="row-fluid">
-												<input type="text" name="desorig" id="form-field-1" placeholder="Actualiza el origen" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required></input>
+												<input type="text" name="descripcion_origen" id="form-field-1" placeholder="Actualiza el origen" onpaste="return false" onKeyUp="this.value = this.value.toUpperCase();" onkeypress="return soloLetras(event)" required></input>
 											</div>
 										</div>						
 								
